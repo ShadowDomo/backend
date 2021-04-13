@@ -1,6 +1,7 @@
 const monk = require('monk')
 const MONGO_CONN_STRING = process.env.URI
 const sha256 = require('crypto-js/sha256')
+const bcrypt = require('bcryptjs')
 const db = monk(MONGO_CONN_STRING)
 const users = db.get('users')
 
@@ -25,9 +26,10 @@ async function storeAccessToken(username, accessToken) {
 // logs the user in
 async function login(user) {
   const username = user.username
-  const hash = user.hash
+  const password = user.password
 
-  if (hash === await getHash(username)) {
+  const serverHash = await getHash(username)
+  if (await bcrypt.compare(password, serverHash)) {
     // generate session id
     const a = Math.floor(Math.random() * 999999999)
     const accessToken = sha256(a.toString()).toString()
@@ -40,7 +42,6 @@ async function login(user) {
   }
 
   return
-
 }
 
 // saves the user's credentials
@@ -50,7 +51,15 @@ async function registerUser(user) {
     console.log('user exists')
     return
   }
-  users.insert(user)
+
+  const password = user.password
+
+  // hash password then insert
+  const hash = (await bcrypt.hash(password, 10)).toString()
+  users.insert({
+    username: user.username,
+    hash: hash
+  })
   return true
 }
 

@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^14.14.37",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
     "csv": "^5.5.0",
