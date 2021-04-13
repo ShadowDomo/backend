@@ -9,13 +9,15 @@ const users = db.get('users')
 async function checkUserExists(username) {
   const result = await users.find({ username: username })
   if (result.length !== 0) return true
+
+  return false
 }
 
 // gets the hash for the given username
 async function getHash(username) {
   const result = await users.findOne({ username: username })
-  const hash = result.hash
 
+  const hash = result.hash
   return hash
 }
 
@@ -28,7 +30,9 @@ async function login(user) {
   const username = user.username
   const password = user.password
 
+  if (!await checkUserExists(username)) return
   const serverHash = await getHash(username)
+
   if (await bcrypt.compare(password, serverHash)) {
     // generate session id
     const a = Math.floor(Math.random() * 999999999)
