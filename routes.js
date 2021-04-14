@@ -3,6 +3,7 @@
 
 const express = require('express')
 const { registerUser, checkUserExists, getHash, login } = require('./models/userAuth.js')
+const { makePost } = require('./models/posts')
 
 const router = express.Router()
 
@@ -10,8 +11,9 @@ const router = express.Router()
 router.get('/', index)
 router.post('/register', register)
 router.post('/login', loginUserController)
+router.post('/newPost', makePostController)
 
-
+// TODO use sockets to constantly fetch new posts
 // TODO temp 
 // default index
 async function index(req, res) {
@@ -19,17 +21,34 @@ async function index(req, res) {
   res.send('hi')
 }
 
-// User login controller
-async function loginUserController(req, res) {
-  const user = req.body
-  const result = await login(user)
-  if (result) {
-    res.send({ sessionID: result })
+
+/** Controller for making post */
+async function makePostController(req, res) {
+  const post = req.body
+  const response = await makePost(post)
+  if (response) {
+    res.send({
+      status: 'Success!'
+    })
     return
   }
 
   res.send({
-    error: 'Wrong username or password'
+    error: 'Failed to make post.'
+  })
+}
+
+// User login controller
+async function loginUserController(req, res) {
+  const user = req.body
+  const response = await login(user)
+  if (response) {
+    res.send({ sessionID: response })
+    return
+  }
+
+  res.send({
+    error: 'Invalid username or password'
   })
 }
 
@@ -40,11 +59,13 @@ async function register(req, res) {
   // register user with db
   const result = await registerUser(user)
   if (result) {
-    res.send('Success!')
+    res.send({
+      status: 'Success!'
+    })
     return
   }
 
-  res.send('Error! Username already taken.')
+  res.send({ error: 'Error! Username already taken.' })
 }
 
 

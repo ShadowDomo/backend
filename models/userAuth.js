@@ -25,6 +25,7 @@ async function storeAccessToken(username, accessToken) {
   users.update({ username: username }, { $set: { accessToken: accessToken } })
 }
 
+// TODO put logic in controller
 // logs the user in
 async function login(user) {
   const username = user.username
@@ -49,6 +50,7 @@ async function login(user) {
 }
 
 // saves the user's credentials
+// TODO put checks in controller, model only for insert
 async function registerUser(user) {
   // console.log(user.username)
   if (await checkUserExists(user.username)) {
