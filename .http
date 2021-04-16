@@ -1,0 +1,32 @@
+GET http://localhost:3001/api/getThreads
+
+### get thread
+GET http://localhost:3001/api/getThread/6076d0768a6e342164a14daa
+
+### make thread
+POST http://localhost:3001/api/newThread
+content-type: application/json
+
+{
+    "username": "dom",
+    "title":"post title", 
+    "content": "wwthwthhwth content "
+}
+
+### register
+POST http://localhost:3001/api/register
+content-type: application/json
+
+{
+    "username":"gay2", 
+    "password": "fcac1231"
+}
+
+### login 
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{
+    "username":"gay2", 
+    "password": "fcac1231"
+}
