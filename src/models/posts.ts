@@ -17,11 +17,14 @@ export interface Post {
   date: string;
 }
 
-/** Makes a post/ */
+/** Makes a post. */
 async function makePost(post: Post, threadID: string) {
-  threads.update({_id: threadID}, {$push: {posts: post}});
-  return true;
-  // update thread
+  try {
+    threads.update({_id: threadID}, {$push: {posts: post}});
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
 /** Makes a thread. */

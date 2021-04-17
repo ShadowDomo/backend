@@ -5,6 +5,7 @@ import {Post, Thread} from '../models/posts';
 /** Controller for making post */
 async function makeThread(req: express.Request, res: express.Response) {
   const thread: Thread = req.body;
+  thread.posts = [];
   const response = await postModel.makeThread(thread);
   if (response) {
     res.send({
@@ -18,6 +19,17 @@ async function makeThread(req: express.Request, res: express.Response) {
   });
 }
 
+/** Generic response handler */
+function responseHandler(response, success, failure, res: express.Response) {
+  if (response) {
+    res.send(success);
+    return;
+  }
+
+  res.send(failure);
+}
+
+/** Makes a post. */
 async function makePost(req: express.Request, res: express.Response) {
   const post: Post = {
     username: req.body.username,
@@ -27,16 +39,12 @@ async function makePost(req: express.Request, res: express.Response) {
 
   const threadID = req.body.threadID;
   const response = await postModel.makePost(post, threadID);
-  if (response) {
-    res.send({
-      status: 'Success!',
-    });
-    return;
-  }
-
-  res.send({
-    error: 'Failed to make post.',
-  });
+  responseHandler(
+    response,
+    {status: 'Success'},
+    {error: 'Failed to update'},
+    res
+  );
 }
 
 //TODO make return recent or add param

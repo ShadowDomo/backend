@@ -9,7 +9,7 @@ content-type: application/json
 
 {
     "username": "kiel",
-    "content": "whats up",
+    "content": "lol gayefefef",
     "date": "today",
     "threadID": "607911547bf7ad5b1cc35fe4"
 }
@@ -20,9 +20,9 @@ POST http://localhost:3001/api/newThread
 content-type: application/json
 
 {
-    "username": "john",
-    "title":"title title", 
-    "content": "content "
+    "username": "salaj",
+    "title":"salaj gay", 
+    "content": "yea he is "
 }
 
 ### register
