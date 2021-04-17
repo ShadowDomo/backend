@@ -14,6 +14,7 @@ router.post('/login', loginController.loginUser);
 router.post('/newThread', postController.makeThread);
 router.get('/getThreads', postController.getThreads);
 router.get('/getThread/:id', postController.getThread);
+router.post('/makePost', postController.makePost);
 
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing

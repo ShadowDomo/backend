@@ -1,10 +1,32 @@
 import * as express from 'express';
 import postModel from '../models/posts';
+import {Post, Thread} from '../models/posts';
 
 /** Controller for making post */
 async function makeThread(req: express.Request, res: express.Response) {
-  const thread = req.body;
+  const thread: Thread = req.body;
   const response = await postModel.makeThread(thread);
+  if (response) {
+    res.send({
+      status: 'Success!',
+    });
+    return;
+  }
+
+  res.send({
+    error: 'Failed to make post.',
+  });
+}
+
+async function makePost(req: express.Request, res: express.Response) {
+  const post: Post = {
+    username: req.body.username,
+    content: req.body.content,
+    date: req.body.date,
+  };
+
+  const threadID = req.body.threadID;
+  const response = await postModel.makePost(post, threadID);
   if (response) {
     res.send({
       status: 'Success!',
@@ -19,7 +41,7 @@ async function makeThread(req: express.Request, res: express.Response) {
 
 //TODO make return recent or add param
 /** Returns all posts */
-async function getThreads(req, res) {
+async function getThreads(req: express.Request, res: express.Response) {
   const response = await postModel.getThreads();
   if (response) {
     res.send(response);
@@ -45,4 +67,4 @@ async function getThread(req, res) {
   });
 }
 
-export default {makeThread, getThreads, getThread};
+export default {makeThread, getThreads, getThread, makePost};

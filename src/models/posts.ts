@@ -1,30 +1,44 @@
 const monk = require('monk');
 const MONGO_CONN_STRING = process.env.URI;
 const db = monk(MONGO_CONN_STRING);
-const posts = db.get('posts');
+const threads = db.get('threads');
 
-interface Thread {
+export interface Thread {
+  _id?: string;
   username: string;
   title: string;
   content: string;
+  posts: Post[];
 }
 
-/** Makes a post. */
-async function makeThread(thread: Thread) {
-  posts.insert(thread);
+export interface Post {
+  username: string;
+  content: string;
+  date: string;
+}
+
+/** Makes a post/ */
+async function makePost(post: Post, threadID: string) {
+  threads.update({_id: threadID}, {$push: {posts: post}});
   return true;
-  // res.send(req.body)
+  // update thread
+}
+
+/** Makes a thread. */
+async function makeThread(thread: Thread) {
+  threads.insert(thread);
+  return true;
+  // TODO error check
 }
 
 /** Gets all threads */
-async function getThreads() {
-  return await posts.find({});
+async function getThreads(): Promise<Thread[]> {
+  return await threads.find({});
 }
 
 /** Gets a thread*/
 async function getThread(id: string) {
-  // console.log(id)
-  return await posts.findOne({_id: id});
+  return await threads.findOne({_id: id});
 }
 
-export default {makeThread, getThreads, getThread};
+export default {makeThread, getThreads, getThread, makePost};

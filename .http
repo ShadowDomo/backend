@@ -1,16 +1,28 @@
 GET http://localhost:3001/api/getThreads
 
 ### get thread
-GET http://localhost:3001/api/getThread/6076d0768a6e342164a14daa
+GET http://localhost:3001/api/getThread/607911547bf7ad5b1cc35fe4
+
+### make post
+POST http://localhost:3001/api/makePost
+content-type: application/json
+
+{
+    "username": "kiel",
+    "content": "whats up",
+    "date": "today",
+    "threadID": "607911547bf7ad5b1cc35fe4"
+}
+
 
 ### make thread
 POST http://localhost:3001/api/newThread
 content-type: application/json
 
 {
-    "username": "dom",
-    "title":"post title", 
-    "content": "wwthwthhwth content "
+    "username": "john",
+    "title":"title title", 
+    "content": "content "
 }
 
 ### register
@@ -18,7 +30,7 @@ POST http://localhost:3001/api/register
 content-type: application/json
 
 {
-    "username":"gay2", 
+    "username":"gay3", 
     "password": "fcac1231"
 }
 
@@ -27,6 +39,6 @@ POST http://localhost:3001/api/login
 content-type: application/json
 
 {
-    "username":"gay2", 
+    "username":"gay3", 
     "password": "fcac1231"
 }
