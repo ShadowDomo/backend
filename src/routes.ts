@@ -9,6 +9,7 @@ const router = express.Router();
 
 // Routes
 router.get('/', index);
+router.get('/getUsername/:id', loginController.getUsername);
 router.post('/register', loginController.registerUser);
 router.post('/login', loginController.loginUser);
 router.post('/newThread', postController.makeThread);

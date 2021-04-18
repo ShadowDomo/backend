@@ -22,6 +22,17 @@ async function getHash(username: string): Promise<string> {
   return hash;
 }
 
+/** Gets the username for the sessionID */
+async function getUsername(sessionID: string) {
+  const result = await users.findOne({accessToken: sessionID});
+
+  if (result === null || result === undefined) {
+    return false;
+  }
+
+  return await result.username;
+}
+
 async function storeAccessToken(username: string, accessToken: string) {
   users.update({username: username}, {$set: {accessToken: accessToken}});
 }
@@ -70,4 +81,4 @@ async function registerUser(user) {
   return true;
 }
 
-export {registerUser, checkUserExists, getHash, login};
+export {registerUser, checkUserExists, getHash, login, getUsername};

@@ -42,3 +42,9 @@ content-type: application/json
     "username":"gay3", 
     "password": "fcac1231"
 }
+
+### getUsername
+GET http://localhost:3001/api/getUsername/06a684bc188ca80295b52a63472b318be109a0db4fab79b504039da784cf876c
+
+
+
