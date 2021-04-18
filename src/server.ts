@@ -5,7 +5,7 @@ const cors = require('cors');
 import helmet = require('helmet');
 import express = require('express');
 import router from './routes';
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 

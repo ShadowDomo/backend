@@ -44,7 +44,7 @@ content-type: application/json
 }
 
 ### getUsername
-GET http://localhost:3001/api/getUsername/06a684bc188ca80295b52a63472b318be109a0db4fab79b504039da784cf876c
+GET http://localhost:3001/api/getUsername/76d1649bb33aa3a85788b5e128b064f403937390a6a2c56bae9e26037b88cb2f
 
 
 
