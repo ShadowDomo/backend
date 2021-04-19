@@ -8,7 +8,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.ts",
+    "start": "node build/server.js",
     "run": "node build/server.js",
     "dev": "nodemon src/server.ts",
     "lint": "gts lint",
