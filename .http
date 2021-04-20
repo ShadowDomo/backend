@@ -1,4 +1,11 @@
+
+GET http://localhost:3001/api/deleteThread/607911547bf7ad5b1cc35fe4
+###
+
 GET http://localhost:3001/api/getThreads
+
+####
+GET https://desolate-spire-28464.herokuapp.com/api/
 
 ### get thread
 GET http://localhost:3001/api/getThread/607911547bf7ad5b1cc35fe4
@@ -47,5 +54,13 @@ content-type: application/json
 ### getUsername
 GET http://localhost:3001/api/getUsername/76d1649bb33aa3a85788b5e128b064f403937390a6a2c56bae9e26037b88cb2f
 
+###
 
+POST http://www.planetminecraft.com/server/oceania-craft-reborn/vote/
+content-type: application/x-www-form-urlencoded
+
+{
+    "mcname":"odq", 
+    "servervote": "1"
+}
 

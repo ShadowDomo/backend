@@ -61,6 +61,13 @@ async function getThreads(req: express.Request, res: express.Response) {
   });
 }
 
+/** Deltes the specified thread */
+async function deleteThread(req: express.Request, res: express.Response) {
+  const threadID = req.params.id;
+  const response = await postModel.deleteThread(threadID);
+  res.send('rip' + threadID);
+}
+
 /** Retrieves a thread */
 async function getThread(req, res) {
   const threadID = req.params.id;
@@ -75,4 +82,4 @@ async function getThread(req, res) {
   });
 }
 
-export default {makeThread, getThreads, getThread, makePost};
+export default {makeThread, deleteThread, getThreads, getThread, makePost};

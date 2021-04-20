@@ -27,6 +27,12 @@ async function makePost(post: Post, threadID: string) {
   }
 }
 
+/** Deletes specified thread. */
+async function deleteThread(threadID: string) {
+  threads.remove({_id: threadID});
+  return true;
+}
+
 /** Makes a thread. */
 async function makeThread(thread: Thread) {
   threads.insert(thread);
@@ -36,7 +42,8 @@ async function makeThread(thread: Thread) {
 
 /** Gets all threads */
 async function getThreads(): Promise<Thread[]> {
-  return await threads.find({});
+  return await threads.find({}, {fields: {posts: 0}});
+  // TODO without the posts too laggy
 }
 
 /** Gets a thread*/
@@ -44,4 +51,4 @@ async function getThread(id: string) {
   return await threads.findOne({_id: id});
 }
 
-export default {makeThread, getThreads, getThread, makePost};
+export default {makeThread, getThreads, getThread, makePost, deleteThread};

@@ -16,6 +16,7 @@ router.post('/newThread', postController.makeThread);
 router.get('/getThreads', postController.getThreads);
 router.get('/getThread/:id', postController.getThread);
 router.post('/makePost', postController.makePost);
+router.get('/deleteThread/:id', postController.deleteThread);
 
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing
