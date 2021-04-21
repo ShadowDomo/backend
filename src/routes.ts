@@ -8,7 +8,7 @@ import * as express from 'express';
 const router = express.Router();
 
 // Routes
-router.get('/', index);
+router.get('/', postController.temp);
 router.get('/getUsername/:id', loginController.getUsername);
 router.post('/register', loginController.registerUser);
 router.post('/login', loginController.loginUser);
@@ -17,12 +17,15 @@ router.get('/getThreads', postController.getThreads);
 router.get('/getThread/:id', postController.getThread);
 router.post('/makePost', postController.makePost);
 router.get('/deleteThread/:id', postController.deleteThread);
+router.get('/deleteThread/:id', postController.deletePost);
+router.get('/getChildrenPosts/:id', postController.getChildrenPosts);
 
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing
 // default index
 async function index(req: express.Request, res: express.Response) {
   // await getHash('john')
+
   res.send('hi');
 }
 
