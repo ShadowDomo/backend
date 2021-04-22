@@ -56,11 +56,13 @@ async function getThread(id: string) {
 
 /** Gets all the posts for parentID */
 async function getChildrenPosts(parentID: string) {
-  const result = threads.find(
+  const result = await threads.findOne(
     {'posts.id': parentID},
-    {'posts.$.childrenIDs': 1}
+    'posts.childrenIDs.$'
   );
-  return result;
+
+  //  posts[0] because findOne above still returns array
+  return result.posts[0].childrenIDs;
 }
 
 /** Appends the child to the parent posts children. */

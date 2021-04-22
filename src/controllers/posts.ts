@@ -66,10 +66,9 @@ async function makePost(req: express.Request, res: express.Response) {
 async function getChildrenPosts(req: express.Request, res: express.Response) {
   const parentID = req.params.id;
   const response = await postModel.getChildrenPosts(parentID);
-  console.table(response);
   responseHandler(
     response,
-    {status: 'Success'},
+    {childrenIDs: response},
     {error: 'Failed to get child posts'},
     res
   );
