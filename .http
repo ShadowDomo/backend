@@ -11,7 +11,7 @@ GET http://localhost:3001/api/getThreads
 GET https://desolate-spire-28464.herokuapp.com/api/
 
 ### get thread
-GET http://localhost:3001/api/getThread/607911547bf7ad5b1cc35fe4
+GET http://localhost:3001/api/getThread/607fd981bead5c38a8be5f8b
 
 
 ###
