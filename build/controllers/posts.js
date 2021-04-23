@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var uuid_1 = require("uuid");
 var posts_1 = require("../models/posts");
 /** Controller for making post */
 function makeThread(req, res) {
@@ -74,20 +75,49 @@ function responseHandler(response, success, failure, res) {
 /** Makes a post. */
 function makePost(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var post, threadID, response;
+        var uuid, parentID, threadID, post, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    uuid = uuid_1.v4();
+                    parentID = req.body.parentID;
+                    threadID = req.body.threadID;
+                    if (!(parentID !== undefined)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, posts_1["default"].updatePostChildren(threadID, parentID, uuid)];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2:
                     post = {
+                        id: uuid,
                         username: req.body.username,
                         content: req.body.content,
-                        date: req.body.date
+                        date: req.body.date,
+                        childrenIDs: [],
+                        parentID: parentID,
+                        imageURL: req.body.imageURL
                     };
-                    threadID = req.body.threadID;
                     return [4 /*yield*/, posts_1["default"].makePost(post, threadID)];
-                case 1:
+                case 3:
                     response = _a.sent();
                     responseHandler(response, { status: 'Success' }, { error: 'Failed to update' }, res);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Retrieves all children posts */
+function getChildrenPosts(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var parentID, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    parentID = req.params.id;
+                    return [4 /*yield*/, posts_1["default"].getChildrenPosts(parentID)];
+                case 1:
+                    response = _a.sent();
+                    responseHandler(response, { childrenIDs: response }, { error: 'Failed to get child posts' }, res);
                     return [2 /*return*/];
             }
         });
@@ -115,6 +145,36 @@ function getThreads(req, res) {
         });
     });
 }
+/** Deltes the specified thread */
+function deleteThread(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var threadID, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    threadID = req.params.id;
+                    return [4 /*yield*/, posts_1["default"].deleteThread(threadID)];
+                case 1:
+                    response = _a.sent();
+                    res.send('rip' + threadID);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Deletes the specified post. */
+function deletePost(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var post;
+        return __generator(this, function (_a) {
+            post = req.params.id;
+            // const response = await postModel.deleteThread(threadID);
+            // res.send('rip' + threadID);
+            res.send('deleted');
+            return [2 /*return*/];
+        });
+    });
+}
 /** Retrieves a thread */
 function getThread(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -138,4 +198,27 @@ function getThread(req, res) {
         });
     });
 }
-exports["default"] = { makeThread: makeThread, getThreads: getThreads, getThread: getThread, makePost: makePost };
+function temp(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, posts_1["default"].temp()];
+                case 1:
+                    response = _a.sent();
+                    res.send(response);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+exports["default"] = {
+    makeThread: makeThread,
+    deleteThread: deleteThread,
+    getThreads: getThreads,
+    getThread: getThread,
+    makePost: makePost,
+    deletePost: deletePost,
+    temp: temp,
+    getChildrenPosts: getChildrenPosts
+};

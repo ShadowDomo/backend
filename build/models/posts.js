@@ -49,9 +49,19 @@ function makePost(post, threadID) {
                 return [2 /*return*/, true];
             }
             catch (error) {
+                console.log(error);
                 return [2 /*return*/, false];
             }
             return [2 /*return*/];
+        });
+    });
+}
+/** Deletes specified thread. */
+function deleteThread(threadID) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            threads.remove({ _id: threadID });
+            return [2 /*return*/, true];
         });
     });
 }
@@ -69,7 +79,7 @@ function getThreads() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, threads.find({})];
+                case 0: return [4 /*yield*/, threads.find({}, { fields: { posts: 0 } })];
                 case 1: return [2 /*return*/, _a.sent()];
             }
         });
@@ -86,4 +96,68 @@ function getThread(id) {
         });
     });
 }
-exports["default"] = { makeThread: makeThread, getThreads: getThreads, getThread: getThread, makePost: makePost };
+/** Gets all the posts for parentID */
+function getChildrenPosts(parentID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var result, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, threads.findOne({ 'posts.id': parentID }, 'posts.childrenIDs.$')];
+                case 1:
+                    result = _a.sent();
+                    //  posts[0] because findOne above still returns array
+                    return [2 /*return*/, result.posts[0].childrenIDs];
+                case 2:
+                    error_1 = _a.sent();
+                    console.error(error_1);
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Appends the child to the parent posts children. */
+function updatePostChildren(threadID, parentID, childID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, threads.update({ _id: threadID, 'posts.id': parentID }, // might be faster
+                        { $push: { 'posts.$.childrenIDs': childID } })];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/, true];
+                case 2:
+                    error_2 = _a.sent();
+                    console.log(error_2);
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+function temp() {
+    return __awaiter(this, void 0, void 0, function () {
+        var query;
+        return __generator(this, function (_a) {
+            query = {
+                content: 'g'
+            };
+            return [2 /*return*/, threads.find(query)];
+        });
+    });
+}
+exports["default"] = {
+    makeThread: makeThread,
+    getThreads: getThreads,
+    getThread: getThread,
+    makePost: makePost,
+    deleteThread: deleteThread,
+    updatePostChildren: updatePostChildren,
+    temp: temp,
+    getChildrenPosts: getChildrenPosts
+};

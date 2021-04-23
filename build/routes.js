@@ -52,6 +52,9 @@ router.post('/newThread', posts_1["default"].makeThread);
 router.get('/getThreads', posts_1["default"].getThreads);
 router.get('/getThread/:id', posts_1["default"].getThread);
 router.post('/makePost', posts_1["default"].makePost);
+router.get('/deleteThread/:id', posts_1["default"].deleteThread);
+router.get('/deleteThread/:id', posts_1["default"].deletePost);
+router.get('/getChildrenPosts/:id', posts_1["default"].getChildrenPosts);
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing
 // default index
@@ -59,7 +62,7 @@ function index(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             // await getHash('john')
-            res.send('hi');
+            res.send('test');
             return [2 /*return*/];
         });
     });

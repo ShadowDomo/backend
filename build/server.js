@@ -3,6 +3,7 @@
 exports.__esModule = true;
 require('dotenv').config();
 var cors = require('cors');
+require('newrelic');
 var helmet = require("helmet");
 var express = require("express");
 var routes_1 = require("./routes");
@@ -14,5 +15,6 @@ app.use(cors());
 app.use(helmet());
 app.use('/api', routes_1["default"]);
 app.listen(PORT, function () {
+    console.log('test');
     console.log("listening on port " + PORT);
 });
