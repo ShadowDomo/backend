@@ -53,6 +53,7 @@ async function makePost(req: express.Request, res: express.Response) {
     date: req.body.date,
     childrenIDs: [],
     parentID: parentID,
+    imageURL: req.body.imageURL,
   };
   const response = await postModel.makePost(post, threadID);
   responseHandler(
