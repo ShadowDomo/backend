@@ -23,12 +23,12 @@ POST http://localhost:3001/api/makePost
 content-type: application/json
 
 {
-    "username": "kiel",
-    "content": "lol dwwdwaadtestt",
+    "username": "admin  ",
+    "content": "yo whats up my dudes",
     "date": "today",
     "threadID": "607fd981bead5c38a8be5f8b",
     "childrenIDs": [],
-    "parentID": "9796ad46-1a60-4290-a81f-2b6daecfe9b0"
+    "parentID": "6e4cef2d-78a0-446a-b2d4-ed74681afc16"
 }
 
 

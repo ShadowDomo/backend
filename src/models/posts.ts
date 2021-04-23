@@ -17,6 +17,7 @@ export interface Post {
   date: string;
   id: string;
   childrenIDs: [];
+  parentID: string;
 }
 
 /** Makes a post. */
