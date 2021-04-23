@@ -2,6 +2,7 @@
 
 require('dotenv').config();
 const cors = require('cors');
+require('newrelic');
 import helmet = require('helmet');
 import express = require('express');
 import router from './routes';
