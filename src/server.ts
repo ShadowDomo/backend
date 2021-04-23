@@ -17,5 +17,6 @@ app.use(helmet());
 
 app.use('/api', router);
 app.listen(PORT, () => {
+  console.log('test');
   console.log(`listening on port ${PORT}`);
 });
