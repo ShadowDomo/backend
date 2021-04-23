@@ -26,7 +26,7 @@ router.get('/getChildrenPosts/:id', postController.getChildrenPosts);
 async function index(req: express.Request, res: express.Response) {
   // await getHash('john')
 
-  res.send('hi');
+  res.send('test');
 }
 
 // module.exports = router
