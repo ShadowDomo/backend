@@ -41,7 +41,7 @@ async function makePost(req: express.Request, res: express.Response) {
   const threadID = req.body.threadID;
 
   // update parent to have this post as a child,
-  if (parentID) {
+  if (parentID !== undefined) {
     await postModel.updatePostChildren(threadID, parentID, uuid);
   }
 

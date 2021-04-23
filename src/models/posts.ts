@@ -77,9 +77,8 @@ async function updatePostChildren(
   childID: string
 ) {
   try {
-    // threads.update({_id: threadID}, {$push: {'posts.childrenIDs': childID}});
     await threads.update(
-      {'posts.id': parentID},
+      {_id: threadID, 'posts.id': parentID}, // might be faster
       {$push: {'posts.$.childrenIDs': childID}}
     );
     return true;
