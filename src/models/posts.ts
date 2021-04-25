@@ -1,3 +1,5 @@
+import {stringify} from 'csv';
+
 const monk = require('monk');
 const MONGO_CONN_STRING = process.env.URI;
 const db = monk(MONGO_CONN_STRING);
@@ -90,6 +92,29 @@ async function updatePostChildren(
   }
 }
 
+/** Deletes the specified post by clearing all details and
+ * adding a deleted flag.
+ */
+async function deletePost(threadID: string, postID: string) {
+  try {
+    // clear all user data from post
+    const res = await threads.update(
+      {_id: threadID, 'posts.id': postID},
+      {$set: {'posts.$.username': '', 'posts.$.content': ''}}
+    );
+
+    // set deleted flag
+    const res2 = await threads.update(
+      {_id: threadID, 'posts.id': postID},
+      {$set: {'posts.$.deleted': true}}
+    );
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+  return true;
+}
+
 async function temp() {
   const query = {
     content: 'g',
@@ -106,4 +131,5 @@ export default {
   updatePostChildren,
   temp,
   getChildrenPosts,
+  deletePost,
 };
