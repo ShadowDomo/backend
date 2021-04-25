@@ -140,6 +140,32 @@ function updatePostChildren(threadID, parentID, childID) {
         });
     });
 }
+/** Deletes the specified post by clearing all details and
+ * adding a deleted flag.
+ */
+function deletePost(threadID, postID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var res, res2, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, threads.update({ _id: threadID, 'posts.id': postID }, { $set: { 'posts.$.content': '' } })];
+                case 1:
+                    res = _a.sent();
+                    return [4 /*yield*/, threads.update({ _id: threadID, 'posts.id': postID }, { $set: { 'posts.$.deleted': true } })];
+                case 2:
+                    res2 = _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    console.log(err_1);
+                    return [2 /*return*/, false];
+                case 4: return [2 /*return*/, true];
+            }
+        });
+    });
+}
 function temp() {
     return __awaiter(this, void 0, void 0, function () {
         var query;
@@ -159,5 +185,6 @@ exports["default"] = {
     deleteThread: deleteThread,
     updatePostChildren: updatePostChildren,
     temp: temp,
-    getChildrenPosts: getChildrenPosts
+    getChildrenPosts: getChildrenPosts,
+    deletePost: deletePost
 };

@@ -100,7 +100,7 @@ async function deletePost(threadID: string, postID: string) {
     // clear all user data from post
     const res = await threads.update(
       {_id: threadID, 'posts.id': postID},
-      {$set: {'posts.$.username': '', 'posts.$.content': ''}}
+      {$set: {'posts.$.content': ''}}
     );
 
     // set deleted flag

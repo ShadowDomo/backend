@@ -165,13 +165,18 @@ function deleteThread(req, res) {
 /** Deletes the specified post. */
 function deletePost(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var post;
+        var threadID, postID, response;
         return __generator(this, function (_a) {
-            post = req.params.id;
-            // const response = await postModel.deleteThread(threadID);
-            // res.send('rip' + threadID);
-            res.send('deleted');
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    threadID = req.params.threadID;
+                    postID = req.params.postID;
+                    return [4 /*yield*/, posts_1["default"].deletePost(threadID, postID)];
+                case 1:
+                    response = _a.sent();
+                    responseHandler(response, { status: 'Success!' }, { error: 'Failed to delete post.' }, res);
+                    return [2 /*return*/];
+            }
         });
     });
 }
