@@ -99,8 +99,8 @@ async function deleteThread(req: express.Request, res: express.Response) {
 
 /** Deletes the specified post. */
 async function deletePost(req: express.Request, res: express.Response) {
-  const threadID = req.params.threadID;
-  const postID = req.params.postID;
+  const threadID = req.body.threadID;
+  const postID = req.body.postID;
 
   const response = await postModel.deletePost(threadID, postID);
   responseHandler(
