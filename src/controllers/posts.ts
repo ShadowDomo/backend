@@ -90,6 +90,15 @@ async function getThreads(req: express.Request, res: express.Response) {
   });
 }
 
+/** Gets a post from the server. */
+async function getPost(req: express.Request, res: express.Response) {
+  const threadID = req.body.threadID;
+  const postID = req.body.postID;
+  const response = await postModel.getPost(threadID, postID);
+
+  responseHandler(response, response, {error: 'Failed to get post.'}, res);
+}
+
 /** Deltes the specified thread */
 async function deleteThread(req: express.Request, res: express.Response) {
   const threadID = req.params.id;
@@ -139,4 +148,5 @@ export default {
   deletePost,
   temp,
   getChildrenPosts,
+  getPost,
 };

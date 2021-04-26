@@ -145,6 +145,24 @@ function getThreads(req, res) {
         });
     });
 }
+/** Gets a post from the server. */
+function getPost(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var threadID, postID, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    threadID = req.body.threadID;
+                    postID = req.body.postID;
+                    return [4 /*yield*/, posts_1["default"].getPost(threadID, postID)];
+                case 1:
+                    response = _a.sent();
+                    responseHandler(response, response, { error: 'Failed to get post.' }, res);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 /** Deltes the specified thread */
 function deleteThread(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -225,5 +243,6 @@ exports["default"] = {
     makePost: makePost,
     deletePost: deletePost,
     temp: temp,
-    getChildrenPosts: getChildrenPosts
+    getChildrenPosts: getChildrenPosts,
+    getPost: getPost
 };

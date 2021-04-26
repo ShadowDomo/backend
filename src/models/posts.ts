@@ -122,9 +122,23 @@ async function temp() {
   return threads.find(query);
 }
 
+/** Gets the specified post */
+async function getPost(threadID: string, postID: string) {
+  try {
+    const query = {_id: threadID, 'posts.id': postID};
+    const resp = await threads.findOne(query, 'posts.$');
+
+    return resp.posts[0];
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+}
+
 export default {
   makeThread,
   getThreads,
+  getPost,
   getThread,
   makePost,
   deleteThread,

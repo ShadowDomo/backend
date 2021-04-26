@@ -18,6 +18,7 @@ router.get('/getThread/:id', postController.getThread);
 router.post('/makePost', postController.makePost);
 router.get('/deleteThread/:id', postController.deleteThread);
 router.post('/deletePost', postController.deletePost);
+router.post('/getPost', postController.getPost);
 router.get('/getChildrenPosts/:id', postController.getChildrenPosts);
 
 // TODO use sockets to constantly fetch new posts

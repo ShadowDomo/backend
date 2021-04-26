@@ -2,16 +2,22 @@
 GET http://localhost:3001/api/deleteThread/607911547bf7ad5b1cc35fe4
 ###
 
-GET http://localhost:3001/api/
+POST http://localhost:3001/api/getPost
+content-type: application/json
 
+{
+    "threadID": "608231127020b6158c9f472a",
+    "postID": "f4900266-a48a-49b7-9a60-1ca9c3dfe3cc"
+}
+###
 
 GET http://localhost:3001/api/getThreads
 
 ####
-GET https://desolate-spire-28464.herokuapp.com/api/
+GET http://syndeyforum-env.eba-f4xyppqy.ap-southeast-2.elasticbeanstalk.com/api/
 
 ### get thread
-GET http://localhost:3001/api/getThread/607fd981bead5c38a8be5f8b
+GET http://localhost:3001/api/getThread/608231127020b6158c9f472a
 
 
 ###

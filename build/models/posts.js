@@ -177,9 +177,32 @@ function temp() {
         });
     });
 }
+/** Gets the specified post */
+function getPost(threadID, postID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var query, resp, err_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    query = { _id: threadID, 'posts.id': postID };
+                    return [4 /*yield*/, threads.findOne(query, 'posts.$')];
+                case 1:
+                    resp = _a.sent();
+                    return [2 /*return*/, resp.posts[0]];
+                case 2:
+                    err_2 = _a.sent();
+                    console.log(err_2);
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
 exports["default"] = {
     makeThread: makeThread,
     getThreads: getThreads,
+    getPost: getPost,
     getThread: getThread,
     makePost: makePost,
     deleteThread: deleteThread,
