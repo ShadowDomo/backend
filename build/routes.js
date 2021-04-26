@@ -53,7 +53,7 @@ router.get('/getThreads', posts_1["default"].getThreads);
 router.get('/getThread/:id', posts_1["default"].getThread);
 router.post('/makePost', posts_1["default"].makePost);
 router.get('/deleteThread/:id', posts_1["default"].deleteThread);
-router.get('/deletePost/:threadID/:postID', posts_1["default"].deletePost);
+router.post('/deletePost', posts_1["default"].deletePost);
 router.get('/getChildrenPosts/:id', posts_1["default"].getChildrenPosts);
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing

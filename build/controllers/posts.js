@@ -169,8 +169,8 @@ function deletePost(req, res) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    threadID = req.params.threadID;
-                    postID = req.params.postID;
+                    threadID = req.body.threadID;
+                    postID = req.body.postID;
                     return [4 /*yield*/, posts_1["default"].deletePost(threadID, postID)];
                 case 1:
                     response = _a.sent();
