@@ -2,7 +2,7 @@
 
 The Backend api for the [forum / social media website](https://github.com/ShadowDomo/frontend). Built with ExpressJS, NodeJS and MongoDB.
 
-Hosted on AWS Elastic Beanstalk, with database hosted on MongoDB Atlas.
+Hosted on AWS Elastic Beanstalk, with the database hosted on MongoDB Atlas.
 
 
 ## Technologies

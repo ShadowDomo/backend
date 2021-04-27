@@ -150,7 +150,8 @@ function deletePost(threadID, postID) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, threads.update({ _id: threadID, 'posts.id': postID }, { $set: { 'posts.$.content': '' } })];
+                    return [4 /*yield*/, threads.update({ _id: threadID, 'posts.id': postID }, { $set: { 'posts.$.content': '', 'posts.$.imageURL': '' } } // todo clear image too
+                        )];
                 case 1:
                     res = _a.sent();
                     return [4 /*yield*/, threads.update({ _id: threadID, 'posts.id': postID }, { $set: { 'posts.$.deleted': true } })];
