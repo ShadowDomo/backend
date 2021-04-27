@@ -93,14 +93,14 @@ async function updatePostChildren(
 }
 
 /** Deletes the specified post by clearing all details and
- * adding a deleted flag.
+ * adding a deleted flag. // TODO only allow if you are the owner
  */
 async function deletePost(threadID: string, postID: string) {
   try {
     // clear all user data from post
     const res = await threads.update(
       {_id: threadID, 'posts.id': postID},
-      {$set: {'posts.$.content': ''}}
+      {$set: {'posts.$.content': '', 'posts.$.imageURL': ''}} // todo clear image too
     );
 
     // set deleted flag

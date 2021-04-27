@@ -141,7 +141,7 @@ function updatePostChildren(threadID, parentID, childID) {
     });
 }
 /** Deletes the specified post by clearing all details and
- * adding a deleted flag.
+ * adding a deleted flag. // TODO only allow if you are the owner
  */
 function deletePost(threadID, postID) {
     return __awaiter(this, void 0, void 0, function () {
