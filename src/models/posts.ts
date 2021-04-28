@@ -11,6 +11,9 @@ export interface Thread {
   title: string;
   content: string;
   posts: Post[];
+
+  // stores username: vote_value
+  votes: {};
 }
 
 export interface Post {
@@ -21,6 +24,9 @@ export interface Post {
   childrenIDs: [];
   parentID: string;
   imageURL: string;
+
+  // stores username: vote_value
+  votes: {};
 }
 
 /** Makes a post. */
@@ -28,6 +34,41 @@ async function makePost(post: Post, threadID: string) {
   try {
     threads.update({_id: threadID}, {$push: {posts: post}});
     return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+/** Gets the number of votes for a post. */
+async function getPostVotes(postID: string) {
+  try {
+    const resp = await threads.findOne({'posts.id': postID}, 'posts.votes.$');
+
+    // TODO use aggregate later, don't know how currently
+    const votes: Object = resp.posts[0].votes;
+    let total = 0;
+    for (const vote in votes) {
+      total += votes[vote];
+    }
+
+    return total.toString();
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+/** Upvotes a post. */
+async function upvotePost(postID: string, vote: string, userID: string) {
+  try {
+    const numVote = parseInt(vote);
+    const query = 'posts.$.votes.' + userID;
+    const resp = await threads.update(
+      {'posts.id': postID},
+      {$set: {[query]: numVote}}
+    );
+    return resp;
   } catch (error) {
     console.log(error);
     return false;
@@ -144,6 +185,8 @@ export default {
   deleteThread,
   updatePostChildren,
   temp,
+  upvotePost,
   getChildrenPosts,
   deletePost,
+  getPostVotes,
 };

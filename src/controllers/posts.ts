@@ -7,6 +7,7 @@ import {Post, Thread} from '../models/posts';
 async function makeThread(req: express.Request, res: express.Response) {
   const thread: Thread = req.body;
   thread.posts = [];
+  thread.votes = {};
   const response = await postModel.makeThread(thread);
   if (response) {
     res.send({
@@ -54,6 +55,7 @@ async function makePost(req: express.Request, res: express.Response) {
     childrenIDs: [],
     parentID: parentID,
     imageURL: req.body.imageURL,
+    votes: {},
   };
   const response = await postModel.makePost(post, threadID);
   responseHandler(
@@ -72,6 +74,33 @@ async function getChildrenPosts(req: express.Request, res: express.Response) {
     response,
     {childrenIDs: response},
     {error: 'Failed to get child posts'},
+    res
+  );
+}
+
+/** Gets the number of votes for a post */
+async function getPostVotes(req: express.Request, res: express.Response) {
+  const postID = req.body.postID;
+  const response = await postModel.getPostVotes(postID);
+  responseHandler(
+    response,
+    {votes: response},
+    {error: 'failed to register vote.'},
+    res
+  );
+}
+
+/** Upvotes the specified post. */
+async function upvotePost(req: express.Request, res: express.Response) {
+  const postID = req.body.postID;
+  const vote = req.body.vote;
+  const userID = req.body.userID;
+
+  const response = await postModel.upvotePost(postID, vote, userID);
+  responseHandler(
+    response,
+    {status: 'Success!'},
+    {error: 'failed to register vote.'},
     res
   );
 }
@@ -95,6 +124,10 @@ async function getPost(req: express.Request, res: express.Response) {
   const threadID = req.body.threadID;
   const postID = req.body.postID;
   const response = await postModel.getPost(threadID, postID);
+
+  // TODO remove all voter id's
+  const votes = await postModel.getPostVotes(postID);
+  response.votes = votes;
 
   responseHandler(response, response, {error: 'Failed to get post.'}, res);
 }
@@ -122,6 +155,7 @@ async function deletePost(req: express.Request, res: express.Response) {
 
 /** Retrieves a thread */
 async function getThread(req, res) {
+  // TODO remove votes from thread output, client shouldnt be able to see vote ids
   const threadID = req.params.id;
   const response = await postModel.getThread(threadID);
   if (response) {
@@ -144,9 +178,11 @@ export default {
   deleteThread,
   getThreads,
   getThread,
+  upvotePost,
   makePost,
   deletePost,
   temp,
   getChildrenPosts,
   getPost,
+  getPostVotes,
 };

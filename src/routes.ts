@@ -11,6 +11,8 @@ const router = express.Router();
 router.get('/', index);
 router.get('/getUsername/:id', loginController.getUsername);
 router.post('/register', loginController.registerUser);
+router.post('/upvotePost', postController.upvotePost);
+router.post('/getPostVotes', postController.getPostVotes);
 router.post('/login', loginController.loginUser);
 router.post('/newThread', postController.makeThread);
 router.get('/getThreads', postController.getThreads);
