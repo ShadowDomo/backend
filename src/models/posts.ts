@@ -42,12 +42,18 @@ async function makePost(post: Post, threadID: string) {
 
 /** Gets the user's vote for the specified post */
 async function getUsersVotes(username: string, postID: string) {
-  const resp = await threads.findOne(
-    {'posts.id': postID, username: username},
-    'posts.votes.$'
-  );
+  try {
+    const resp = await threads.findOne(
+      {'posts.id': postID, 'posts.username': username},
+      'posts.votes.$'
+    );
 
-  return resp.posts[0].votes[username];
+    // TODO error handling
+    return resp.posts[0].votes[username];
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 }
 
 /** Gets the number of votes for a post. */

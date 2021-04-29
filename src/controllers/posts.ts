@@ -72,10 +72,12 @@ async function getUsersVotes(req: express.Request, res: express.Response) {
   const postID = req.body.postID;
 
   const response = await postModel.getUsersVotes(username, postID);
-  res.send({
-    username: username,
-    vote: response,
-  });
+  responseHandler(
+    response,
+    {username: username, vote: response},
+    {error: 'Failed to get users votes.'},
+    res
+  );
 }
 
 /** Retrieves all children posts */
