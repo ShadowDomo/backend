@@ -66,6 +66,18 @@ async function makePost(req: express.Request, res: express.Response) {
   );
 }
 
+/** Gets the user's vote for the specified post */
+async function getUsersVotes(req: express.Request, res: express.Response) {
+  const username = req.body.username;
+  const postID = req.body.postID;
+
+  const response = await postModel.getUsersVotes(username, postID);
+  res.send({
+    username: username,
+    vote: response,
+  });
+}
+
 /** Retrieves all children posts */
 async function getChildrenPosts(req: express.Request, res: express.Response) {
   const parentID = req.params.id;
@@ -94,7 +106,7 @@ async function getPostVotes(req: express.Request, res: express.Response) {
 async function upvotePost(req: express.Request, res: express.Response) {
   const postID = req.body.postID;
   const vote = req.body.vote;
-  const userID = req.body.userID;
+  const userID = req.body.username;
 
   const response = await postModel.upvotePost(postID, vote, userID);
   responseHandler(
@@ -180,6 +192,7 @@ export default {
   getThread,
   upvotePost,
   makePost,
+  getUsersVotes,
   deletePost,
   temp,
   getChildrenPosts,
