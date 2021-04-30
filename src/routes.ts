@@ -23,6 +23,8 @@ router.post('/deletePost', postController.deletePost);
 router.post('/getPost', postController.getPost);
 router.get('/getChildrenPosts/:id', postController.getChildrenPosts);
 router.post('/getUsersVotes', postController.getUsersVotes);
+router.post('/hidePost', postController.hidePost);
+router.post('/getHiddenPosts', postController.getHiddenPosts);
 
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing

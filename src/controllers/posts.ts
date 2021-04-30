@@ -104,6 +104,34 @@ async function getPostVotes(req: express.Request, res: express.Response) {
   );
 }
 
+/** Gets the user's hidden posts. */
+async function getHiddenPosts(req: express.Request, res: express.Response) {
+  const username = req.body.username;
+
+  const response = await postModel.getHiddenPosts(username);
+  if (response === 'no posts') {
+    res.send('no posts');
+    return;
+  }
+
+  res.send(response);
+}
+
+/** Sets the post to be hidden for the user */
+async function hidePost(req: express.Request, res: express.Response) {
+  const username = req.body.username;
+  const postID = req.body.postID;
+  const hidden = req.body.hidden;
+
+  const response = await postModel.hidePost(username, postID, hidden);
+  responseHandler(
+    response,
+    {status: 'success'},
+    {error: 'failed to hide post.'},
+    res
+  );
+}
+
 /** Upvotes the specified post. */
 async function upvotePost(req: express.Request, res: express.Response) {
   const postID = req.body.postID;
@@ -200,4 +228,6 @@ export default {
   getChildrenPosts,
   getPost,
   getPostVotes,
+  hidePost,
+  getHiddenPosts,
 };

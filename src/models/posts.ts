@@ -1,9 +1,8 @@
-import {stringify} from 'csv';
-
 const monk = require('monk');
 const MONGO_CONN_STRING = process.env.URI;
 const db = monk(MONGO_CONN_STRING);
 const threads = db.get('threads');
+const users = db.get('users');
 
 export interface Thread {
   _id?: string;
@@ -76,6 +75,46 @@ async function getPostVotes(postID: string) {
   } catch (error) {
     console.log(error);
     return false;
+  }
+}
+
+/** Gets the user's hidden posts. */
+async function getHiddenPosts(username: string) {
+  try {
+    const resp: Object = await users.findOne(
+      {username: username},
+      'hiddenPosts'
+    );
+    if (Object.prototype.hasOwnProperty.call(resp, 'hiddenPosts')) {
+      return resp['hiddenPosts'];
+    }
+
+    return 'no posts';
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+}
+
+/** Sets a post to be hidden for a user. */
+async function hidePost(username: string, postID: string, hidden: boolean) {
+  try {
+    if (hidden) {
+      const resp = await users.update(
+        {username: username},
+        {$set: {[`hiddenPosts.${postID}`]: true}}
+      );
+      return resp;
+    }
+
+    const resp = await users.update(
+      {username: username},
+      {$unset: {[`hiddenPosts.${postID}`]: true}}
+    );
+    return resp;
+  } catch (err) {
+    console.log(err);
+    return err;
   }
 }
 
@@ -217,4 +256,6 @@ export default {
   deletePost,
   getPostVotes,
   getUsersVotes,
+  hidePost,
+  getHiddenPosts,
 };

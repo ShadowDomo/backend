@@ -160,6 +160,46 @@ function getPostVotes(req, res) {
         });
     });
 }
+/** Gets the user's hidden posts. */
+function getHiddenPosts(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var username, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    username = req.body.username;
+                    return [4 /*yield*/, posts_1["default"].getHiddenPosts(username)];
+                case 1:
+                    response = _a.sent();
+                    if (response === 'no posts') {
+                        res.send('no posts');
+                        return [2 /*return*/];
+                    }
+                    res.send(response);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Sets the post to be hidden for the user */
+function hidePost(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var username, postID, hidden, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    username = req.body.username;
+                    postID = req.body.postID;
+                    hidden = req.body.hidden;
+                    return [4 /*yield*/, posts_1["default"].hidePost(username, postID, hidden)];
+                case 1:
+                    response = _a.sent();
+                    responseHandler(response, { status: 'success' }, { error: 'failed to hide post.' }, res);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 /** Upvotes the specified post. */
 function upvotePost(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -307,5 +347,7 @@ exports["default"] = {
     temp: temp,
     getChildrenPosts: getChildrenPosts,
     getPost: getPost,
-    getPostVotes: getPostVotes
+    getPostVotes: getPostVotes,
+    hidePost: hidePost,
+    getHiddenPosts: getHiddenPosts
 };

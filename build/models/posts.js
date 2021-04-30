@@ -40,6 +40,7 @@ var monk = require('monk');
 var MONGO_CONN_STRING = process.env.URI;
 var db = monk(MONGO_CONN_STRING);
 var threads = db.get('threads');
+var users = db.get('users');
 /** Makes a post. */
 function makePost(post, threadID) {
     return __awaiter(this, void 0, void 0, function () {
@@ -103,6 +104,57 @@ function getPostVotes(postID) {
                     console.log(error_2);
                     return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Gets the user's hidden posts. */
+function getHiddenPosts(username) {
+    return __awaiter(this, void 0, void 0, function () {
+        var resp, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, users.findOne({ username: username }, 'hiddenPosts')];
+                case 1:
+                    resp = _a.sent();
+                    if (Object.prototype.hasOwnProperty.call(resp, 'hiddenPosts')) {
+                        return [2 /*return*/, resp['hiddenPosts']];
+                    }
+                    return [2 /*return*/, 'no posts'];
+                case 2:
+                    err_1 = _a.sent();
+                    console.log(err_1);
+                    return [2 /*return*/, err_1];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Sets a post to be hidden for a user. */
+function hidePost(username, postID, hidden) {
+    return __awaiter(this, void 0, void 0, function () {
+        var resp_1, resp, err_2;
+        var _a, _b;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _c.trys.push([0, 4, , 5]);
+                    if (!hidden) return [3 /*break*/, 2];
+                    return [4 /*yield*/, users.update({ username: username }, { $set: (_a = {}, _a["hiddenPosts." + postID] = true, _a) })];
+                case 1:
+                    resp_1 = _c.sent();
+                    return [2 /*return*/, resp_1];
+                case 2: return [4 /*yield*/, users.update({ username: username }, { $unset: (_b = {}, _b["hiddenPosts." + postID] = true, _b) })];
+                case 3:
+                    resp = _c.sent();
+                    return [2 /*return*/, resp];
+                case 4:
+                    err_2 = _c.sent();
+                    console.log(err_2);
+                    return [2 /*return*/, err_2];
+                case 5: return [2 /*return*/];
             }
         });
     });
@@ -226,7 +278,7 @@ function updatePostChildren(threadID, parentID, childID) {
  */
 function deletePost(threadID, postID) {
     return __awaiter(this, void 0, void 0, function () {
-        var res, res2, err_1;
+        var res, res2, err_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -240,8 +292,8 @@ function deletePost(threadID, postID) {
                     res2 = _a.sent();
                     return [3 /*break*/, 4];
                 case 3:
-                    err_1 = _a.sent();
-                    console.log(err_1);
+                    err_3 = _a.sent();
+                    console.log(err_3);
                     return [2 /*return*/, false];
                 case 4: return [2 /*return*/, true];
             }
@@ -262,7 +314,7 @@ function temp() {
 /** Gets the specified post */
 function getPost(threadID, postID) {
     return __awaiter(this, void 0, void 0, function () {
-        var query, resp, err_2;
+        var query, resp, err_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -273,8 +325,8 @@ function getPost(threadID, postID) {
                     resp = _a.sent();
                     return [2 /*return*/, resp.posts[0]];
                 case 2:
-                    err_2 = _a.sent();
-                    console.log(err_2);
+                    err_4 = _a.sent();
+                    console.log(err_4);
                     return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
             }
@@ -294,5 +346,7 @@ exports["default"] = {
     getChildrenPosts: getChildrenPosts,
     deletePost: deletePost,
     getPostVotes: getPostVotes,
-    getUsersVotes: getUsersVotes
+    getUsersVotes: getUsersVotes,
+    hidePost: hidePost,
+    getHiddenPosts: getHiddenPosts
 };

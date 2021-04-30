@@ -59,6 +59,8 @@ router.post('/deletePost', posts_1["default"].deletePost);
 router.post('/getPost', posts_1["default"].getPost);
 router.get('/getChildrenPosts/:id', posts_1["default"].getChildrenPosts);
 router.post('/getUsersVotes', posts_1["default"].getUsersVotes);
+router.post('/hidePost', posts_1["default"].hidePost);
+router.post('/getHiddenPosts', posts_1["default"].getHiddenPosts);
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing
 // default index
