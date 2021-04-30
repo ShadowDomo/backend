@@ -82,8 +82,15 @@ async function getPostVotes(postID: string) {
 /** Upvotes a post. */
 async function upvotePost(postID: string, vote: string, userID: string) {
   try {
-    const numVote = parseInt(vote);
+    let numVote = parseInt(vote);
     const query = 'posts.$.votes.' + userID;
+
+    // if upvoting when current vote is downvote, then set vote to 0
+    const currentVote = await getUsersVotes(userID, postID);
+    if (currentVote + numVote === 0) {
+      numVote = 0;
+    }
+
     const resp = await threads.update(
       {'posts.id': postID},
       {$set: {[query]: numVote}}
