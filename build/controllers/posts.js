@@ -47,6 +47,7 @@ function makeThread(req, res) {
                 case 0:
                     thread = req.body;
                     thread.posts = [];
+                    thread.votes = {};
                     return [4 /*yield*/, posts_1["default"].makeThread(thread)];
                 case 1:
                     response = _a.sent();
@@ -95,12 +96,31 @@ function makePost(req, res) {
                         date: req.body.date,
                         childrenIDs: [],
                         parentID: parentID,
-                        imageURL: req.body.imageURL
+                        imageURL: req.body.imageURL,
+                        votes: {}
                     };
                     return [4 /*yield*/, posts_1["default"].makePost(post, threadID)];
                 case 3:
                     response = _a.sent();
                     responseHandler(response, { status: 'Success' }, { error: 'Failed to update' }, res);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Gets the user's vote for the specified post */
+function getUsersVotes(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var username, postID, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    username = req.body.username;
+                    postID = req.body.postID;
+                    return [4 /*yield*/, posts_1["default"].getUsersVotes(username, postID)];
+                case 1:
+                    response = _a.sent();
+                    responseHandler(response, { username: username, vote: response }, { error: 'Failed to get users votes.' }, res);
                     return [2 /*return*/];
             }
         });
@@ -118,6 +138,42 @@ function getChildrenPosts(req, res) {
                 case 1:
                     response = _a.sent();
                     responseHandler(response, { childrenIDs: response }, { error: 'Failed to get child posts' }, res);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Gets the number of votes for a post */
+function getPostVotes(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var postID, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    postID = req.body.postID;
+                    return [4 /*yield*/, posts_1["default"].getPostVotes(postID)];
+                case 1:
+                    response = _a.sent();
+                    responseHandler(response, { votes: response }, { error: 'failed to register vote.' }, res);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Upvotes the specified post. */
+function upvotePost(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var postID, vote, userID, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    postID = req.body.postID;
+                    vote = req.body.vote;
+                    userID = req.body.username;
+                    return [4 /*yield*/, posts_1["default"].upvotePost(postID, vote, userID)];
+                case 1:
+                    response = _a.sent();
+                    responseHandler(response, { status: 'Success!' }, { error: 'failed to register vote.' }, res);
                     return [2 /*return*/];
             }
         });
@@ -148,7 +204,7 @@ function getThreads(req, res) {
 /** Gets a post from the server. */
 function getPost(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var threadID, postID, response;
+        var threadID, postID, response, votes;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -157,6 +213,10 @@ function getPost(req, res) {
                     return [4 /*yield*/, posts_1["default"].getPost(threadID, postID)];
                 case 1:
                     response = _a.sent();
+                    return [4 /*yield*/, posts_1["default"].getPostVotes(postID)];
+                case 2:
+                    votes = _a.sent();
+                    response.votes = votes;
                     responseHandler(response, response, { error: 'Failed to get post.' }, res);
                     return [2 /*return*/];
             }
@@ -240,9 +300,12 @@ exports["default"] = {
     deleteThread: deleteThread,
     getThreads: getThreads,
     getThread: getThread,
+    upvotePost: upvotePost,
     makePost: makePost,
+    getUsersVotes: getUsersVotes,
     deletePost: deletePost,
     temp: temp,
     getChildrenPosts: getChildrenPosts,
-    getPost: getPost
+    getPost: getPost,
+    getPostVotes: getPostVotes
 };

@@ -56,6 +56,87 @@ function makePost(post, threadID) {
         });
     });
 }
+/** Gets the user's vote for the specified post */
+function getUsersVotes(username, postID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var resp, votes, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, threads.findOne({ 'posts.id': postID }, "posts.votes." + username + ".$")];
+                case 1:
+                    resp = _a.sent();
+                    votes = resp.posts[0].votes;
+                    if (Object.prototype.hasOwnProperty.call(votes, username)) {
+                        return [2 /*return*/, votes[username]];
+                    }
+                    return [2 /*return*/, false];
+                case 2:
+                    error_1 = _a.sent();
+                    console.log(error_1);
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Gets the number of votes for a post. */
+function getPostVotes(postID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var resp, votes, total, vote, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, threads.findOne({ 'posts.id': postID }, 'posts.votes.$')];
+                case 1:
+                    resp = _a.sent();
+                    votes = resp.posts[0].votes;
+                    total = 0;
+                    for (vote in votes) {
+                        total += votes[vote];
+                    }
+                    return [2 /*return*/, total.toString()];
+                case 2:
+                    error_2 = _a.sent();
+                    console.log(error_2);
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+/** Upvotes a post. */
+function upvotePost(postID, vote, userID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var numVote, query, currentVote, resp, error_3;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 3, , 4]);
+                    numVote = parseInt(vote);
+                    query = 'posts.$.votes.' + userID;
+                    return [4 /*yield*/, getUsersVotes(userID, postID)];
+                case 1:
+                    currentVote = _b.sent();
+                    if (currentVote + numVote === 0) {
+                        numVote = 0;
+                    }
+                    return [4 /*yield*/, threads.update({ 'posts.id': postID }, { $set: (_a = {}, _a[query] = numVote, _a) })];
+                case 2:
+                    resp = _b.sent();
+                    return [2 /*return*/, resp];
+                case 3:
+                    error_3 = _b.sent();
+                    console.log(error_3);
+                    return [2 /*return*/, false];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
 /** Deletes specified thread. */
 function deleteThread(threadID) {
     return __awaiter(this, void 0, void 0, function () {
@@ -99,7 +180,7 @@ function getThread(id) {
 /** Gets all the posts for parentID */
 function getChildrenPosts(parentID) {
     return __awaiter(this, void 0, void 0, function () {
-        var result, error_1;
+        var result, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -110,8 +191,8 @@ function getChildrenPosts(parentID) {
                     //  posts[0] because findOne above still returns array
                     return [2 /*return*/, result.posts[0].childrenIDs];
                 case 2:
-                    error_1 = _a.sent();
-                    console.error(error_1);
+                    error_4 = _a.sent();
+                    console.error(error_4);
                     return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
             }
@@ -121,7 +202,7 @@ function getChildrenPosts(parentID) {
 /** Appends the child to the parent posts children. */
 function updatePostChildren(threadID, parentID, childID) {
     return __awaiter(this, void 0, void 0, function () {
-        var error_2;
+        var error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -132,8 +213,8 @@ function updatePostChildren(threadID, parentID, childID) {
                     _a.sent();
                     return [2 /*return*/, true];
                 case 2:
-                    error_2 = _a.sent();
-                    console.log(error_2);
+                    error_5 = _a.sent();
+                    console.log(error_5);
                     return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
             }
@@ -209,6 +290,9 @@ exports["default"] = {
     deleteThread: deleteThread,
     updatePostChildren: updatePostChildren,
     temp: temp,
+    upvotePost: upvotePost,
     getChildrenPosts: getChildrenPosts,
-    deletePost: deletePost
+    deletePost: deletePost,
+    getPostVotes: getPostVotes,
+    getUsersVotes: getUsersVotes
 };
