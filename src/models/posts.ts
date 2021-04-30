@@ -44,12 +44,16 @@ async function makePost(post: Post, threadID: string) {
 async function getUsersVotes(username: string, postID: string) {
   try {
     const resp = await threads.findOne(
-      {'posts.id': postID, 'posts.username': username},
-      'posts.votes.$'
+      {'posts.id': postID},
+      `posts.votes.${username}.$`
     );
 
     // TODO error handling
-    return resp.posts[0].votes[username];
+    const votes: Object = resp.posts[0].votes;
+    if (Object.prototype.hasOwnProperty.call(votes, username)) {
+      return votes[username];
+    }
+    return false;
   } catch (error) {
     console.log(error);
     return false;
