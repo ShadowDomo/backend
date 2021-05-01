@@ -181,6 +181,24 @@ function getHiddenPosts(req, res) {
         });
     });
 }
+/** Checks if the post is hidden for the given username. */
+function isPostHidden(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var username, postID, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    username = req.body.username;
+                    postID = req.body.postID;
+                    return [4 /*yield*/, posts_1["default"].isPostHidden(postID, username)];
+                case 1:
+                    response = _a.sent();
+                    responseHandler(response, response, { error: 'failed to get post post hidden status' }, res);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 /** Sets the post to be hidden for the user */
 function hidePost(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -349,5 +367,6 @@ exports["default"] = {
     getPost: getPost,
     getPostVotes: getPostVotes,
     hidePost: hidePost,
-    getHiddenPosts: getHiddenPosts
+    getHiddenPosts: getHiddenPosts,
+    isPostHidden: isPostHidden
 };

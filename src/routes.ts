@@ -8,7 +8,7 @@ import * as express from 'express';
 const router = express.Router();
 
 // Routes
-router.get('/', index);
+router.post('/', index);
 router.get('/getUsername/:id', loginController.getUsername);
 router.post('/register', loginController.registerUser);
 router.post('/upvotePost', postController.upvotePost);
@@ -25,6 +25,7 @@ router.get('/getChildrenPosts/:id', postController.getChildrenPosts);
 router.post('/getUsersVotes', postController.getUsersVotes);
 router.post('/hidePost', postController.hidePost);
 router.post('/getHiddenPosts', postController.getHiddenPosts);
+router.post('/isPostHidden', postController.isPostHidden);
 
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing

@@ -117,6 +117,20 @@ async function getHiddenPosts(req: express.Request, res: express.Response) {
   res.send(response);
 }
 
+/** Checks if the post is hidden for the given username. */
+async function isPostHidden(req: express.Request, res: express.Response) {
+  const username = req.body.username;
+  const postID = req.body.postID;
+
+  const response = await postModel.isPostHidden(postID, username);
+  responseHandler(
+    response,
+    response,
+    {error: 'failed to get post post hidden status'},
+    res
+  );
+}
+
 /** Sets the post to be hidden for the user */
 async function hidePost(req: express.Request, res: express.Response) {
   const username = req.body.username;
@@ -230,4 +244,5 @@ export default {
   getPostVotes,
   hidePost,
   getHiddenPosts,
+  isPostHidden,
 };

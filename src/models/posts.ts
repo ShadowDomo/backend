@@ -78,6 +78,23 @@ async function getPostVotes(postID: string) {
   }
 }
 
+/** Checks if the post is hidden for the given username. */
+async function isPostHidden(postID: string, username: string) {
+  try {
+    const resp = await users.findOne({
+      username: username,
+      [`hiddenPosts.${postID}`]: true,
+    });
+    if (resp) return {status: true};
+
+    return {status: false};
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+  // return {'1dog': '2'};
+}
+
 /** Gets the user's hidden posts. */
 async function getHiddenPosts(username: string) {
   try {
@@ -258,4 +275,5 @@ export default {
   getUsersVotes,
   hidePost,
   getHiddenPosts,
+  isPostHidden,
 };

@@ -108,6 +108,34 @@ function getPostVotes(postID) {
         });
     });
 }
+/** Checks if the post is hidden for the given username. */
+function isPostHidden(postID, username) {
+    return __awaiter(this, void 0, void 0, function () {
+        var resp, error_3;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    _b.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, users.findOne((_a = {
+                                username: username
+                            },
+                            _a["hiddenPosts." + postID] = true,
+                            _a))];
+                case 1:
+                    resp = _b.sent();
+                    if (resp)
+                        return [2 /*return*/, { status: true }];
+                    return [2 /*return*/, { status: false }];
+                case 2:
+                    error_3 = _b.sent();
+                    console.log(error_3);
+                    return [2 /*return*/, false];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
 /** Gets the user's hidden posts. */
 function getHiddenPosts(username) {
     return __awaiter(this, void 0, void 0, function () {
@@ -162,7 +190,7 @@ function hidePost(username, postID, hidden) {
 /** Upvotes a post. */
 function upvotePost(postID, vote, userID) {
     return __awaiter(this, void 0, void 0, function () {
-        var numVote, query, currentVote, resp, error_3;
+        var numVote, query, currentVote, resp, error_4;
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
@@ -181,8 +209,8 @@ function upvotePost(postID, vote, userID) {
                     resp = _b.sent();
                     return [2 /*return*/, resp];
                 case 3:
-                    error_3 = _b.sent();
-                    console.log(error_3);
+                    error_4 = _b.sent();
+                    console.log(error_4);
                     return [2 /*return*/, false];
                 case 4: return [2 /*return*/];
             }
@@ -232,7 +260,7 @@ function getThread(id) {
 /** Gets all the posts for parentID */
 function getChildrenPosts(parentID) {
     return __awaiter(this, void 0, void 0, function () {
-        var result, error_4;
+        var result, error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -243,8 +271,8 @@ function getChildrenPosts(parentID) {
                     //  posts[0] because findOne above still returns array
                     return [2 /*return*/, result.posts[0].childrenIDs];
                 case 2:
-                    error_4 = _a.sent();
-                    console.error(error_4);
+                    error_5 = _a.sent();
+                    console.error(error_5);
                     return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
             }
@@ -254,7 +282,7 @@ function getChildrenPosts(parentID) {
 /** Appends the child to the parent posts children. */
 function updatePostChildren(threadID, parentID, childID) {
     return __awaiter(this, void 0, void 0, function () {
-        var error_5;
+        var error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -265,8 +293,8 @@ function updatePostChildren(threadID, parentID, childID) {
                     _a.sent();
                     return [2 /*return*/, true];
                 case 2:
-                    error_5 = _a.sent();
-                    console.log(error_5);
+                    error_6 = _a.sent();
+                    console.log(error_6);
                     return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
             }
@@ -348,5 +376,6 @@ exports["default"] = {
     getPostVotes: getPostVotes,
     getUsersVotes: getUsersVotes,
     hidePost: hidePost,
-    getHiddenPosts: getHiddenPosts
+    getHiddenPosts: getHiddenPosts,
+    isPostHidden: isPostHidden
 };

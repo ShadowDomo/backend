@@ -44,7 +44,7 @@ var login_1 = require("./controllers/login");
 var express = require("express");
 var router = express.Router();
 // Routes
-router.get('/', index);
+router.post('/', index);
 router.get('/getUsername/:id', login_1["default"].getUsername);
 router.post('/register', login_1["default"].registerUser);
 router.post('/upvotePost', posts_1["default"].upvotePost);
@@ -61,6 +61,7 @@ router.get('/getChildrenPosts/:id', posts_1["default"].getChildrenPosts);
 router.post('/getUsersVotes', posts_1["default"].getUsersVotes);
 router.post('/hidePost', posts_1["default"].hidePost);
 router.post('/getHiddenPosts', posts_1["default"].getHiddenPosts);
+router.post('/isPostHidden', posts_1["default"].isPostHidden);
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing
 // default index
