@@ -147,6 +147,10 @@ async function upvotePost(postID: string, vote: string, userID: string) {
       numVote = 0;
     }
 
+    if (currentVote === numVote) {
+      numVote = 0;
+    }
+
     const resp = await threads.update(
       {'posts.id': postID},
       {$set: {[query]: numVote}}
