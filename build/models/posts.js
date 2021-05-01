@@ -204,6 +204,9 @@ function upvotePost(postID, vote, userID) {
                     if (currentVote + numVote === 0) {
                         numVote = 0;
                     }
+                    if (currentVote === numVote) {
+                        numVote = 0;
+                    }
                     return [4 /*yield*/, threads.update({ 'posts.id': postID }, { $set: (_a = {}, _a[query] = numVote, _a) })];
                 case 2:
                     resp = _b.sent();
