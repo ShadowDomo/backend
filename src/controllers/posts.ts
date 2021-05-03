@@ -1,7 +1,9 @@
 import * as express from 'express';
+import {Socket} from 'socket.io';
 import {v4 as uuidv4} from 'uuid';
 import postModel from '../models/posts';
 import {Post, Thread} from '../models/posts';
+import {connections} from '../socketHandler';
 
 /** Controller for making post */
 async function makeThread(req: express.Request, res: express.Response) {
@@ -39,7 +41,14 @@ async function makePost(req: express.Request, res: express.Response) {
   // parent ID is the uuid of the parent post
   const parentID = req.body.parentID;
 
+  const app = req.app;
+  const io: Socket = app.get('io');
+  // io.emit('update');
+
   const threadID = req.body.threadID;
+
+  // broadcast to all users viewing thread
+  io.to(threadID).emit('update', 'post was made on this thread');
 
   // update parent to have this post as a child,
   if (parentID !== undefined) {
