@@ -181,9 +181,20 @@ async function getThreads(): Promise<Thread[]> {
   // TODO without the posts too laggy
 }
 
-/** Gets a thread*/
+/** Gets a thread and it*/
 async function getThread(id: string) {
-  return await threads.findOne({_id: id});
+  return await threads.findOne(
+    {_id: id},
+    {
+      fields: {
+        'posts.id': 1,
+        username: 1,
+        content: 1,
+        title: 1,
+        'posts.parentID': 1,
+      },
+    }
+  );
 }
 
 /** Gets all the posts for parentID */
