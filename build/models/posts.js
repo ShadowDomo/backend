@@ -249,12 +249,20 @@ function getThreads() {
         });
     });
 }
-/** Gets a thread*/
+/** Gets a thread and it*/
 function getThread(id) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, threads.findOne({ _id: id })];
+                case 0: return [4 /*yield*/, threads.findOne({ _id: id }, {
+                        fields: {
+                            'posts.id': 1,
+                            username: 1,
+                            content: 1,
+                            title: 1,
+                            'posts.parentID': 1
+                        }
+                    })];
                 case 1: return [2 /*return*/, _a.sent()];
             }
         });
