@@ -16,17 +16,16 @@ const app = express();
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin:
-      'http://syndeyforum-env.eba-f4xyppqy.ap-southeast-2.elasticbeanstalk.com/', // TODO not hardcoded!!!
+    origin: [
+      'http://syndeyforum-env.eba-f4xyppqy.ap-southeast-2.elasticbeanstalk.com/',
+      'http://localhost:3000',
+    ], // TODO not hardcoded!!!
     methods: ['GET', 'POST'],
   },
 });
 
 // handles sockets
 io.on('connection', onConnection);
-httpServer.listen(PORT, () => {
-  console.log('sockets are listening on ' + PORT);
-});
 
 // Middleware
 app.use(express.json());
@@ -36,6 +35,10 @@ app.use(helmet());
 app.use('/api', router);
 app.set('io', io);
 
-app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
+// app.listen(PORT, () => {
+//   console.log(`listening on port ${PORT}`);
+// });
+
+httpServer.listen(PORT, () => {
+  console.log('sockets and server are listening on ' + PORT);
 });
