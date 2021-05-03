@@ -76,13 +76,17 @@ function responseHandler(response, success, failure, res) {
 /** Makes a post. */
 function makePost(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var uuid, parentID, threadID, post, response;
+        var uuid, parentID, app, io, threadID, post, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     uuid = uuid_1.v4();
                     parentID = req.body.parentID;
+                    app = req.app;
+                    io = app.get('io');
                     threadID = req.body.threadID;
+                    // broadcast to all users viewing thread
+                    io.to(threadID).emit('update', 'post was made on this thread');
                     if (!(parentID !== undefined)) return [3 /*break*/, 2];
                     return [4 /*yield*/, posts_1["default"].updatePostChildren(threadID, parentID, uuid)];
                 case 1:
