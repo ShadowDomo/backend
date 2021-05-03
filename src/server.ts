@@ -16,15 +16,16 @@ const app = express();
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer, {
   cors: {
-    origin: 'http://localhost:3000', // TODO CHANGE FOR SERVER
+    origin:
+      'http://syndeyforum-env.eba-f4xyppqy.ap-southeast-2.elasticbeanstalk.com/', // TODO not hardcoded!!!
     methods: ['GET', 'POST'],
   },
 });
 
 // handles sockets
 io.on('connection', onConnection);
-httpServer.listen(4000, () => {
-  console.log('sockets are listening on 4000');
+httpServer.listen(PORT, () => {
+  console.log('sockets are listening on ' + PORT);
 });
 
 // Middleware
