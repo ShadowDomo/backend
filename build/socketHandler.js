@@ -1,44 +1,44 @@
 "use strict";
 exports.__esModule = true;
-exports.connections = void 0;
 // holds threadIDs and sockets which are connected
-exports.connections = {};
+// export const connections: Object = {}; // TODO dont need this
 /** The handler for all socket connections. */
 var onConnection = function (socket) {
     // client sends the current threadID
     var clientID = socket.id;
     var threadID;
     socket.on('onThread', function (response) {
-        threadID = onThread(response, clientID);
+        threadID = response;
         socket.join(threadID);
-        console.log(socket.rooms);
+        // console.log(socket.rooms);
     });
     // send socket ID
     socket.emit('your id', clientID);
-    socket.on('disconnect', function () { return disconnect(threadID, clientID); });
+    // socket.on('disconnect', () => disconnect(threadID, clientID));
+    // TODO clean up empty rooms
     // function emitMessageToClient() {
     //   socket.emit('update', 'someone made an update to this thread');
     // }
 };
-function disconnect(threadID, clientID) {
-    console.log('DISCONNECTED');
-    if (!Object.prototype.hasOwnProperty.call(exports.connections, threadID)) {
-        return;
-    }
-    if (!exports.connections[threadID].has(clientID)) {
-        return;
-    }
-    exports.connections[threadID]["delete"](clientID);
-    console.log(exports.connections);
-}
-function onThread(response, clientID) {
-    var threadID = response;
-    console.log('received data from client response was: ' + threadID);
-    if (!Object.prototype.hasOwnProperty.call(exports.connections, threadID)) {
-        exports.connections[threadID] = new Set();
-    }
-    exports.connections[threadID].add(clientID);
-    console.log(exports.connections);
-    return threadID;
-}
+// function disconnect(threadID: string, clientID: string) {
+//   console.log('DISCONNECTED');
+//   if (!Object.prototype.hasOwnProperty.call(connections, threadID)) {
+//     return;
+//   }
+//   if (!connections[threadID].has(clientID)) {
+//     return;
+//   }
+//   connections[threadID].delete(clientID);
+//   console.log(connections);
+// }
+// function onThread(response: string, clientID: string) {
+//   const threadID = response;
+//   // console.log('received data from client response was: ' + threadID);
+//   // if (!Object.prototype.hasOwnProperty.call(connections, threadID)) {
+//   //   connections[threadID] = new Set();
+//   // }
+//   // connections[threadID].add(clientID);
+//   // console.log(connections);
+//   return threadID;
+// }
 exports["default"] = onConnection;

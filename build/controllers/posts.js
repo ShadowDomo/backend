@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var uuid_1 = require("uuid");
 var posts_1 = require("../models/posts");
+// import {connections} from '../socketHandler';
 /** Controller for making post */
 function makeThread(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -85,14 +86,15 @@ function makePost(req, res) {
                     app = req.app;
                     io = app.get('io');
                     threadID = req.body.threadID;
-                    // broadcast to all users viewing thread
-                    io.to(threadID).emit('update', 'post was made on this thread');
                     if (!(parentID !== undefined)) return [3 /*break*/, 2];
                     return [4 /*yield*/, posts_1["default"].updatePostChildren(threadID, parentID, uuid)];
                 case 1:
                     _a.sent();
-                    _a.label = 2;
+                    return [3 /*break*/, 3];
                 case 2:
+                    parentID = null;
+                    _a.label = 3;
+                case 3:
                     post = {
                         id: uuid,
                         username: req.body.username,
@@ -104,9 +106,12 @@ function makePost(req, res) {
                         votes: {}
                     };
                     return [4 /*yield*/, posts_1["default"].makePost(post, threadID)];
-                case 3:
+                case 4:
                     response = _a.sent();
                     responseHandler(response, { status: 'Success' }, { error: 'Failed to update' }, res);
+                    // console.log(post);
+                    // broadcast to all users viewing thread
+                    io.to(threadID).emit('newPost', post);
                     return [2 /*return*/];
             }
         });
