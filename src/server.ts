@@ -19,6 +19,7 @@ const io = require('socket.io')(httpServer, {
     origin: [
       'http://syndeyforum-env.eba-f4xyppqy.ap-southeast-2.elasticbeanstalk.com/',
       'http://localhost:3000',
+      'http://domz.me',
     ], // TODO not hardcoded!!!
     methods: ['GET', 'POST'],
   },
