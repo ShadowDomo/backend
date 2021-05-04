@@ -40,15 +40,7 @@ async function makePost(req: express.Request, res: express.Response) {
 
   // parent ID is the uuid of the parent post
   let parentID = req.body.parentID;
-
-  const app = req.app;
-  const io: Socket = app.get('io');
-  // io.emit('update');
-
   const threadID = req.body.threadID;
-
-  // // broadcast to all users viewing thread
-  // io.to(threadID).emit('update', 'post was made on this thread');
 
   // update parent to have this post as a child,
   if (parentID !== undefined) {
@@ -75,9 +67,20 @@ async function makePost(req: express.Request, res: express.Response) {
     {error: 'Failed to update'},
     res
   );
-  // console.log(post);
+
   // broadcast to all users viewing thread
-  io.to(threadID).emit('newPost', post);
+  broadcast(req, 'newPost', post, threadID);
+}
+
+function broadcast(
+  req: express.Request,
+  eventName: string,
+  body: any,
+  threadID: string
+) {
+  const app = req.app;
+  const io: Socket = app.get('io');
+  io.to(threadID).emit(eventName, body);
 }
 
 /** Gets the user's vote for the specified post */
@@ -162,10 +165,12 @@ async function hidePost(req: express.Request, res: express.Response) {
 
 /** Upvotes the specified post. */
 async function upvotePost(req: express.Request, res: express.Response) {
-  const postID = req.body.postID;
+  const postID: string = req.body.postID;
   const vote = req.body.vote;
   const userID = req.body.username;
 
+  // find threadID to broadcast to all viewers of thread
+  const threadID = await postModel.findThreadForPost(postID);
   const response = await postModel.upvotePost(postID, vote, userID);
   responseHandler(
     response,
@@ -173,6 +178,8 @@ async function upvotePost(req: express.Request, res: express.Response) {
     {error: 'failed to register vote.'},
     res
   );
+
+  broadcast(req, 'upvotePost', postID, threadID);
 }
 
 //TODO make return recent or add param

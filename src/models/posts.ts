@@ -135,6 +135,12 @@ async function hidePost(username: string, postID: string, hidden: boolean) {
   }
 }
 
+/** Returns the threadID for the specified post. */
+async function findThreadForPost(postID: string) {
+  const resp = await threads.findOne({'posts.id': postID});
+  return resp._id.toString();
+}
+
 /** Upvotes a post. */
 async function upvotePost(postID: string, vote: string, userID: string) {
   try {
@@ -286,6 +292,7 @@ export default {
   upvotePost,
   getChildrenPosts,
   deletePost,
+  findThreadForPost,
   getPostVotes,
   getUsersVotes,
   hidePost,

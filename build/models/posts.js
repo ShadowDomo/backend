@@ -187,6 +187,20 @@ function hidePost(username, postID, hidden) {
         });
     });
 }
+/** Returns the threadID for the specified post. */
+function findThreadForPost(postID) {
+    return __awaiter(this, void 0, void 0, function () {
+        var resp;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, threads.findOne({ 'posts.id': postID })];
+                case 1:
+                    resp = _a.sent();
+                    return [2 /*return*/, resp._id.toString()];
+            }
+        });
+    });
+}
 /** Upvotes a post. */
 function upvotePost(postID, vote, userID) {
     return __awaiter(this, void 0, void 0, function () {
@@ -384,6 +398,7 @@ exports["default"] = {
     upvotePost: upvotePost,
     getChildrenPosts: getChildrenPosts,
     deletePost: deletePost,
+    findThreadForPost: findThreadForPost,
     getPostVotes: getPostVotes,
     getUsersVotes: getUsersVotes,
     hidePost: hidePost,

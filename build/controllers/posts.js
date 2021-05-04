@@ -77,14 +77,12 @@ function responseHandler(response, success, failure, res) {
 /** Makes a post. */
 function makePost(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var uuid, parentID, app, io, threadID, post, response;
+        var uuid, parentID, threadID, post, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     uuid = uuid_1.v4();
                     parentID = req.body.parentID;
-                    app = req.app;
-                    io = app.get('io');
                     threadID = req.body.threadID;
                     if (!(parentID !== undefined)) return [3 /*break*/, 2];
                     return [4 /*yield*/, posts_1["default"].updatePostChildren(threadID, parentID, uuid)];
@@ -109,13 +107,17 @@ function makePost(req, res) {
                 case 4:
                     response = _a.sent();
                     responseHandler(response, { status: 'Success' }, { error: 'Failed to update' }, res);
-                    // console.log(post);
                     // broadcast to all users viewing thread
-                    io.to(threadID).emit('newPost', post);
+                    broadcast(req, 'newPost', post, threadID);
                     return [2 /*return*/];
             }
         });
     });
+}
+function broadcast(req, eventName, body, threadID) {
+    var app = req.app;
+    var io = app.get('io');
+    io.to(threadID).emit(eventName, body);
 }
 /** Gets the user's vote for the specified post */
 function getUsersVotes(req, res) {
@@ -230,17 +232,21 @@ function hidePost(req, res) {
 /** Upvotes the specified post. */
 function upvotePost(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var postID, vote, userID, response;
+        var postID, vote, userID, threadID, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     postID = req.body.postID;
                     vote = req.body.vote;
                     userID = req.body.username;
-                    return [4 /*yield*/, posts_1["default"].upvotePost(postID, vote, userID)];
+                    return [4 /*yield*/, posts_1["default"].findThreadForPost(postID)];
                 case 1:
+                    threadID = _a.sent();
+                    return [4 /*yield*/, posts_1["default"].upvotePost(postID, vote, userID)];
+                case 2:
                     response = _a.sent();
                     responseHandler(response, { status: 'Success!' }, { error: 'failed to register vote.' }, res);
+                    broadcast(req, 'upvotePost', postID, threadID);
                     return [2 /*return*/];
             }
         });
