@@ -326,6 +326,7 @@ function deletePost(req, res) {
                 case 1:
                     response = _a.sent();
                     responseHandler(response, { status: 'Success!' }, { error: 'Failed to delete post.' }, res);
+                    broadcast(req, 'postDeleted', postID, threadID);
                     return [2 /*return*/];
             }
         });

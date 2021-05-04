@@ -228,6 +228,8 @@ async function deletePost(req: express.Request, res: express.Response) {
     {error: 'Failed to delete post.'},
     res
   );
+
+  broadcast(req, 'postDeleted', postID, threadID);
 }
 
 /** Retrieves a thread */
