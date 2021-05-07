@@ -1,9 +1,9 @@
 import * as express from 'express';
-import {Socket} from 'socket.io';
 import {v4 as uuidv4} from 'uuid';
 import postModel from '../models/posts';
+import communitiesModel from '../models/communities';
 import {Post, Thread} from '../models/posts';
-// import {connections} from '../socketHandler';
+import {broadcast} from './broadcast';
 
 /** Controller for making post */
 async function makeThread(req: express.Request, res: express.Response) {
@@ -37,7 +37,7 @@ function responseHandler(response, success, failure, res: express.Response) {
 async function makePost(req: express.Request, res: express.Response) {
   // post's id
   const uuid = uuidv4();
-
+  const communityName = req.body.commuityName;
   // parent ID is the uuid of the parent post
   let parentID = req.body.parentID;
   const threadID = req.body.threadID;
@@ -70,17 +70,6 @@ async function makePost(req: express.Request, res: express.Response) {
 
   // broadcast to all users viewing thread
   broadcast(req, 'newPost', post, threadID);
-}
-
-function broadcast(
-  req: express.Request,
-  eventName: string,
-  body: any,
-  threadID: string
-) {
-  const app = req.app;
-  const io: Socket = app.get('io');
-  io.to(threadID).emit(eventName, body);
 }
 
 /** Gets the user's vote for the specified post */
@@ -182,20 +171,6 @@ async function upvotePost(req: express.Request, res: express.Response) {
   broadcast(req, 'upvotePost', postID, threadID);
 }
 
-//TODO make return recent or add param
-/** Returns all posts */
-async function getThreads(req: express.Request, res: express.Response) {
-  const response = await postModel.getThreads();
-  if (response) {
-    res.send(response);
-    return;
-  }
-
-  res.send({
-    error: 'Failed to get posts.',
-  });
-}
-
 /** Gets a post from the server. */
 async function getPost(req: express.Request, res: express.Response) {
   const threadID = req.body.threadID;
@@ -212,8 +187,16 @@ async function getPost(req: express.Request, res: express.Response) {
 /** Deltes the specified thread */
 async function deleteThread(req: express.Request, res: express.Response) {
   const threadID = req.params.id;
+  const communityName = req.params.communityName;
   const response = await postModel.deleteThread(threadID);
+
+  // delete from community too
+  const comResponse = await communitiesModel.deleteThread(
+    communityName,
+    threadID
+  );
   res.send('rip' + threadID);
+  broadcast(req, 'deletedThread', threadID, communityName);
 }
 
 /** Deletes the specified post. */
@@ -233,7 +216,7 @@ async function deletePost(req: express.Request, res: express.Response) {
 }
 
 /** Retrieves a thread */
-async function getThread(req, res) {
+async function getThread(req: express.Request, res: express.Response) {
   // TODO remove votes from thread output, client shouldnt be able to see vote ids
   const threadID = req.params.id;
   const response = await postModel.getThread(threadID);
@@ -246,7 +229,6 @@ async function getThread(req, res) {
     error: 'Failed to get posts.',
   });
 }
-
 async function temp(req, res) {
   const response = await postModel.temp();
   res.send(response);
@@ -255,7 +237,6 @@ async function temp(req, res) {
 export default {
   makeThread,
   deleteThread,
-  getThreads,
   getThread,
   upvotePost,
   makePost,

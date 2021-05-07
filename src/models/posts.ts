@@ -11,8 +11,10 @@ export interface Thread {
   content: string;
   posts: Post[];
 
+  id?: string;
   // stores username: vote_value
   votes: {};
+  communityName?: string;
 }
 
 export interface Post {
@@ -176,8 +178,8 @@ async function deleteThread(threadID: string) {
 
 /** Makes a thread. */
 async function makeThread(thread: Thread) {
-  threads.insert(thread);
-  return true;
+  const resp = await threads.insert(thread);
+  return resp;
   // TODO error check
 }
 
