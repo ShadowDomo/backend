@@ -6,49 +6,20 @@ import {Socket} from 'socket.io';
 /** The handler for all socket connections. */
 const onConnection = (socket: Socket) => {
   // client sends the current threadID
+
+  // for each thread
   const clientID = socket.id;
-  let threadID: string;
-  socket.on('onThread', response => {
-    threadID = response;
+  socket.on('onThread', threadID => {
     socket.join(threadID);
-    // console.log(socket.rooms);
   });
+
+  // for community home pages
+  socket.on('onCommunity', communityName => {
+    socket.join(communityName);
+  });
+
   // send socket ID
   socket.emit('your id', clientID);
-
-  // socket.on('disconnect', () => disconnect(threadID, clientID));
-  // TODO clean up empty rooms
-
-  // function emitMessageToClient() {
-  //   socket.emit('update', 'someone made an update to this thread');
-  // }
 };
-
-// function disconnect(threadID: string, clientID: string) {
-//   console.log('DISCONNECTED');
-//   if (!Object.prototype.hasOwnProperty.call(connections, threadID)) {
-//     return;
-//   }
-//   if (!connections[threadID].has(clientID)) {
-//     return;
-//   }
-
-//   connections[threadID].delete(clientID);
-//   console.log(connections);
-// }
-
-// function onThread(response: string, clientID: string) {
-//   const threadID = response;
-//   // console.log('received data from client response was: ' + threadID);
-
-//   // if (!Object.prototype.hasOwnProperty.call(connections, threadID)) {
-//   //   connections[threadID] = new Set();
-//   // }
-
-//   // connections[threadID].add(clientID);
-//   // console.log(connections);
-
-//   return threadID;
-// }
 
 export default onConnection;
