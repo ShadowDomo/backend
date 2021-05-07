@@ -38,7 +38,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var uuid_1 = require("uuid");
 var posts_1 = require("../models/posts");
-// import {connections} from '../socketHandler';
+var communities_1 = require("../models/communities");
+var broadcast_1 = require("./broadcast");
 /** Controller for making post */
 function makeThread(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -77,11 +78,12 @@ function responseHandler(response, success, failure, res) {
 /** Makes a post. */
 function makePost(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var uuid, parentID, threadID, post, response;
+        var uuid, communityName, parentID, threadID, post, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     uuid = uuid_1.v4();
+                    communityName = req.body.commuityName;
                     parentID = req.body.parentID;
                     threadID = req.body.threadID;
                     if (!(parentID !== undefined)) return [3 /*break*/, 2];
@@ -108,16 +110,11 @@ function makePost(req, res) {
                     response = _a.sent();
                     responseHandler(response, { status: 'Success' }, { error: 'Failed to update' }, res);
                     // broadcast to all users viewing thread
-                    broadcast(req, 'newPost', post, threadID);
+                    broadcast_1.broadcast(req, 'newPost', post, threadID);
                     return [2 /*return*/];
             }
         });
     });
-}
-function broadcast(req, eventName, body, threadID) {
-    var app = req.app;
-    var io = app.get('io');
-    io.to(threadID).emit(eventName, body);
 }
 /** Gets the user's vote for the specified post */
 function getUsersVotes(req, res) {
@@ -246,29 +243,7 @@ function upvotePost(req, res) {
                 case 2:
                     response = _a.sent();
                     responseHandler(response, { status: 'Success!' }, { error: 'failed to register vote.' }, res);
-                    broadcast(req, 'upvotePost', postID, threadID);
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-//TODO make return recent or add param
-/** Returns all posts */
-function getThreads(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, posts_1["default"].getThreads()];
-                case 1:
-                    response = _a.sent();
-                    if (response) {
-                        res.send(response);
-                        return [2 /*return*/];
-                    }
-                    res.send({
-                        error: 'Failed to get posts.'
-                    });
+                    broadcast_1.broadcast(req, 'upvotePost', postID, threadID);
                     return [2 /*return*/];
             }
         });
@@ -299,15 +274,20 @@ function getPost(req, res) {
 /** Deltes the specified thread */
 function deleteThread(req, res) {
     return __awaiter(this, void 0, void 0, function () {
-        var threadID, response;
+        var threadID, communityName, response, comResponse;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     threadID = req.params.id;
+                    communityName = req.params.communityName;
                     return [4 /*yield*/, posts_1["default"].deleteThread(threadID)];
                 case 1:
                     response = _a.sent();
+                    return [4 /*yield*/, communities_1["default"].deleteThread(communityName, threadID)];
+                case 2:
+                    comResponse = _a.sent();
                     res.send('rip' + threadID);
+                    broadcast_1.broadcast(req, 'deletedThread', threadID, communityName);
                     return [2 /*return*/];
             }
         });
@@ -326,7 +306,7 @@ function deletePost(req, res) {
                 case 1:
                     response = _a.sent();
                     responseHandler(response, { status: 'Success!' }, { error: 'Failed to delete post.' }, res);
-                    broadcast(req, 'postDeleted', postID, threadID);
+                    broadcast_1.broadcast(req, 'postDeleted', postID, threadID);
                     return [2 /*return*/];
             }
         });
@@ -372,7 +352,6 @@ function temp(req, res) {
 exports["default"] = {
     makeThread: makeThread,
     deleteThread: deleteThread,
-    getThreads: getThreads,
     getThread: getThread,
     upvotePost: upvotePost,
     makePost: makePost,

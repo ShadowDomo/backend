@@ -41,6 +41,7 @@ exports.__esModule = true;
 // const express = require('express');
 var posts_1 = require("./controllers/posts");
 var login_1 = require("./controllers/login");
+var communities_1 = require("./controllers/communities");
 var express = require("express");
 var router = express.Router();
 // Routes
@@ -50,11 +51,10 @@ router.post('/register', login_1["default"].registerUser);
 router.post('/upvotePost', posts_1["default"].upvotePost);
 router.post('/getPostVotes', posts_1["default"].getPostVotes);
 router.post('/login', login_1["default"].loginUser);
-router.post('/newThread', posts_1["default"].makeThread);
-router.get('/getThreads', posts_1["default"].getThreads);
+// router.get('/getThreads/:id', postController.getThreads);
 router.get('/getThread/:id', posts_1["default"].getThread);
 router.post('/makePost', posts_1["default"].makePost);
-router.get('/deleteThread/:id', posts_1["default"].deleteThread);
+router.get('/deleteThread/:communityName/:id', posts_1["default"].deleteThread);
 router.post('/deletePost', posts_1["default"].deletePost);
 router.post('/getPost', posts_1["default"].getPost);
 router.get('/getChildrenPosts/:id', posts_1["default"].getChildrenPosts);
@@ -62,6 +62,11 @@ router.post('/getUsersVotes', posts_1["default"].getUsersVotes);
 router.post('/hidePost', posts_1["default"].hidePost);
 router.post('/getHiddenPosts', posts_1["default"].getHiddenPosts);
 router.post('/isPostHidden', posts_1["default"].isPostHidden);
+// communities routes
+router.get('/getThreads/:communityName', communities_1["default"].getThreads);
+router.post('/addCommunity', communities_1["default"].addCommunity);
+router.post('/newThread', communities_1["default"].makeThread);
+router.get('/getCommunities', communities_1["default"].getCommunities);
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing
 // default index

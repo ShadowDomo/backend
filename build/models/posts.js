@@ -246,9 +246,14 @@ function deleteThread(threadID) {
 /** Makes a thread. */
 function makeThread(thread) {
     return __awaiter(this, void 0, void 0, function () {
+        var resp;
         return __generator(this, function (_a) {
-            threads.insert(thread);
-            return [2 /*return*/, true];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, threads.insert(thread)];
+                case 1:
+                    resp = _a.sent();
+                    return [2 /*return*/, resp];
+            }
         });
     });
 }
