@@ -22,6 +22,21 @@ async function makeThread(communityName: string, threadID: string) {
   return resp;
   // TODO error check
 }
+async function getCommunity(communityName: string) {
+  const resp = await communities.findOne(
+    {communityName: communityName},
+    {
+      fields: {
+        communityName: 1,
+        description: 1,
+        date: 1,
+        admins: 1,
+        creatorUsername: 1,
+      },
+    }
+  );
+  return resp;
+}
 
 /** Gets all the communities */
 async function getCommunities() {
@@ -74,4 +89,5 @@ export default {
   makeThread,
   addCommunity,
   checkNameValidity,
+  getCommunity,
 };

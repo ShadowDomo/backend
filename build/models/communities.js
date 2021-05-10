@@ -53,6 +53,27 @@ function makeThread(communityName, threadID) {
         });
     });
 }
+function getCommunity(communityName) {
+    return __awaiter(this, void 0, void 0, function () {
+        var resp;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, communities.findOne({ communityName: communityName }, {
+                        fields: {
+                            communityName: 1,
+                            description: 1,
+                            date: 1,
+                            admins: 1,
+                            creatorUsername: 1
+                        }
+                    })];
+                case 1:
+                    resp = _a.sent();
+                    return [2 /*return*/, resp];
+            }
+        });
+    });
+}
 /** Gets all the communities */
 function getCommunities() {
     return __awaiter(this, void 0, void 0, function () {
@@ -136,5 +157,6 @@ exports["default"] = {
     getCommunities: getCommunities,
     makeThread: makeThread,
     addCommunity: addCommunity,
-    checkNameValidity: checkNameValidity
+    checkNameValidity: checkNameValidity,
+    getCommunity: getCommunity
 };

@@ -60,6 +60,23 @@ function getThreads(req, res) {
         });
     });
 }
+/** Gets the community specified by the community name. */
+function getCommunity(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var communityName, resp;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    communityName = req.params.name;
+                    return [4 /*yield*/, communities_1["default"].getCommunity(communityName)];
+                case 1:
+                    resp = _a.sent();
+                    res.send(resp);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 /** Retrieves all the communities */
 function getCommunities(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -138,4 +155,10 @@ function checkNameValidity(name) {
         });
     });
 }
-exports["default"] = { getThreads: getThreads, addCommunity: addCommunity, makeThread: makeThread, getCommunities: getCommunities };
+exports["default"] = {
+    getThreads: getThreads,
+    addCommunity: addCommunity,
+    makeThread: makeThread,
+    getCommunities: getCommunities,
+    getCommunity: getCommunity
+};

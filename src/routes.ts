@@ -32,6 +32,7 @@ router.get('/getThreads/:communityName', communityController.getThreads);
 router.post('/addCommunity', communityController.addCommunity);
 router.post('/newThread', communityController.makeThread);
 router.get('/getCommunities', communityController.getCommunities);
+router.get('/getCommunity/:name', communityController.getCommunity);
 
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing

@@ -16,6 +16,13 @@ async function getThreads(req: express.Request, res: express.Response) {
   res.send(resp);
 }
 
+/** Gets the community specified by the community name. */
+async function getCommunity(req: express.Request, res: express.Response) {
+  const communityName = req.params.name;
+  const resp = await communitiesModel.getCommunity(communityName);
+  res.send(resp);
+}
+
 /** Retrieves all the communities */
 async function getCommunities(req: express.Request, res: express.Response) {
   const resp = await communitiesModel.getCommunities();
@@ -62,4 +69,10 @@ async function checkNameValidity(name: string) {
   return true;
 }
 
-export default {getThreads, addCommunity, makeThread, getCommunities};
+export default {
+  getThreads,
+  addCommunity,
+  makeThread,
+  getCommunities,
+  getCommunity,
+};

@@ -67,6 +67,7 @@ router.get('/getThreads/:communityName', communities_1["default"].getThreads);
 router.post('/addCommunity', communities_1["default"].addCommunity);
 router.post('/newThread', communities_1["default"].makeThread);
 router.get('/getCommunities', communities_1["default"].getCommunities);
+router.get('/getCommunity/:name', communities_1["default"].getCommunity);
 // TODO use sockets to constantly fetch new posts
 // TODO temp for testing
 // default index
