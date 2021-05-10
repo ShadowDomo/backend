@@ -1,4 +1,3 @@
-import {Thread} from './posts';
 const monk = require('monk');
 const MONGO_CONN_STRING = process.env.URI;
 const db = monk(MONGO_CONN_STRING);
@@ -8,7 +7,7 @@ const communities: any = db.get('communities');
 export interface Community {
   communityName: string;
   description: string;
-  admins: string;
+  admins: string[];
   date: string;
   creatorUsername: string;
   _id?: string;

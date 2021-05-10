@@ -35,6 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 exports.__esModule = true;
 var communities_1 = require("../models/communities");
 var posts_1 = require("../models/posts");
@@ -71,7 +76,11 @@ function getCommunity(req, res) {
                     return [4 /*yield*/, communities_1["default"].getCommunity(communityName)];
                 case 1:
                     resp = _a.sent();
-                    res.send(resp);
+                    if (resp) {
+                        res.send(resp);
+                        return [2 /*return*/];
+                    }
+                    res.send({ error: 'No community known by that name.' });
                     return [2 /*return*/];
             }
         });
@@ -131,6 +140,9 @@ function addCommunity(req, res) {
                         res.send({ error: 'Community name already in use.' });
                         return [2 /*return*/];
                     }
+                    communityDetails.admins = __spreadArray(__spreadArray([], communityDetails.admins), [
+                        communityDetails.creatorUsername,
+                    ]);
                     return [4 /*yield*/, communities_1["default"].addCommunity(communityDetails)];
                 case 2:
                     response = _a.sent();

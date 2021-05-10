@@ -20,7 +20,12 @@ async function getThreads(req: express.Request, res: express.Response) {
 async function getCommunity(req: express.Request, res: express.Response) {
   const communityName = req.params.name;
   const resp = await communitiesModel.getCommunity(communityName);
-  res.send(resp);
+  if (resp) {
+    res.send(resp);
+    return;
+  }
+
+  res.send({error: 'No community known by that name.'});
 }
 
 /** Retrieves all the communities */
@@ -54,6 +59,11 @@ async function addCommunity(req: express.Request, res: express.Response) {
     res.send({error: 'Community name already in use.'});
     return;
   }
+
+  communityDetails.admins = [
+    ...communityDetails.admins,
+    communityDetails.creatorUsername,
+  ];
 
   const response = await communitiesModel.addCommunity(communityDetails);
   res.send(response);
