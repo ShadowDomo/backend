@@ -40,6 +40,20 @@ var monk = require('monk');
 var MONGO_CONN_STRING = process.env.URI;
 var db = monk(MONGO_CONN_STRING);
 var communities = db.get('communities');
+/** Updates a community. */
+function updateCommunity(communityName, description, admins) {
+    return __awaiter(this, void 0, void 0, function () {
+        var resp;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, communities.update({ communityName: communityName }, { $set: { description: description, admins: admins } })];
+                case 1:
+                    resp = _a.sent();
+                    return [2 /*return*/, resp];
+            }
+        });
+    });
+}
 function makeThread(communityName, threadID) {
     return __awaiter(this, void 0, void 0, function () {
         var resp;
@@ -158,5 +172,6 @@ exports["default"] = {
     makeThread: makeThread,
     addCommunity: addCommunity,
     checkNameValidity: checkNameValidity,
-    getCommunity: getCommunity
+    getCommunity: getCommunity,
+    updateCommunity: updateCommunity
 };

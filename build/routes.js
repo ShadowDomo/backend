@@ -65,6 +65,7 @@ router.post('/isPostHidden', posts_1["default"].isPostHidden);
 // communities routes
 router.get('/getThreads/:communityName', communities_1["default"].getThreads);
 router.post('/addCommunity', communities_1["default"].addCommunity);
+router.post('/updateCommunity', communities_1["default"].updateCommunity);
 router.post('/newThread', communities_1["default"].makeThread);
 router.get('/getCommunities', communities_1["default"].getCommunities);
 router.get('/getCommunity/:name', communities_1["default"].getCommunity);

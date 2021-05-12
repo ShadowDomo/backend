@@ -65,6 +65,25 @@ function getThreads(req, res) {
         });
     });
 }
+/** Updates a community. */
+function updateCommunity(req, res) {
+    return __awaiter(this, void 0, void 0, function () {
+        var description, admins, communityName, resp;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    description = req.body.description;
+                    admins = req.body.admins;
+                    communityName = req.body.communityName;
+                    return [4 /*yield*/, communities_1["default"].updateCommunity(communityName, description, admins)];
+                case 1:
+                    resp = _a.sent();
+                    res.send(resp);
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 /** Gets the community specified by the community name. */
 function getCommunity(req, res) {
     return __awaiter(this, void 0, void 0, function () {
@@ -172,5 +191,6 @@ exports["default"] = {
     addCommunity: addCommunity,
     makeThread: makeThread,
     getCommunities: getCommunities,
+    updateCommunity: updateCommunity,
     getCommunity: getCommunity
 };
