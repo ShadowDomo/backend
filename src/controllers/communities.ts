@@ -16,6 +16,20 @@ async function getThreads(req: express.Request, res: express.Response) {
   res.send(resp);
 }
 
+/** Updates a community. */
+async function updateCommunity(req: express.Request, res: express.Response) {
+  const description = req.body.description;
+  const admins = req.body.admins;
+  const communityName = req.body.communityName;
+
+  const resp = await communitiesModel.updateCommunity(
+    communityName,
+    description,
+    admins
+  );
+  res.send(resp);
+}
+
 /** Gets the community specified by the community name. */
 async function getCommunity(req: express.Request, res: express.Response) {
   const communityName = req.params.name;
@@ -84,5 +98,6 @@ export default {
   addCommunity,
   makeThread,
   getCommunities,
+  updateCommunity,
   getCommunity,
 };

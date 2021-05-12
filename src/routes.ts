@@ -30,6 +30,7 @@ router.post('/isPostHidden', postController.isPostHidden);
 // communities routes
 router.get('/getThreads/:communityName', communityController.getThreads);
 router.post('/addCommunity', communityController.addCommunity);
+router.post('/updateCommunity', communityController.updateCommunity);
 router.post('/newThread', communityController.makeThread);
 router.get('/getCommunities', communityController.getCommunities);
 router.get('/getCommunity/:name', communityController.getCommunity);

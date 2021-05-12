@@ -13,6 +13,19 @@ export interface Community {
   _id?: string;
 }
 
+/** Updates a community. */
+async function updateCommunity(
+  communityName: string,
+  description: string,
+  admins: string[]
+) {
+  const resp = await communities.update(
+    {communityName: communityName},
+    {$set: {description: description, admins: admins}}
+  );
+  return resp;
+}
+
 async function makeThread(communityName: string, threadID: string) {
   const resp = await communities.update(
     {communityName: communityName},
@@ -89,4 +102,5 @@ export default {
   addCommunity,
   checkNameValidity,
   getCommunity,
+  updateCommunity,
 };
