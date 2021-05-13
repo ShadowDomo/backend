@@ -279,7 +279,8 @@ function getThread(id) {
                             username: 1,
                             content: 1,
                             title: 1,
-                            'posts.parentID': 1
+                            'posts.parentID': 1,
+                            date: 1
                         }
                     })];
                 case 1: return [2 /*return*/, _a.sent()];

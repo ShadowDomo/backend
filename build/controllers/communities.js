@@ -130,6 +130,7 @@ function makeThread(req, res) {
                     thread = req.body;
                     thread.posts = [];
                     thread.votes = {};
+                    thread.date = new Date().getTime().toString();
                     communityName = req.body.communityName;
                     return [4 /*yield*/, posts_1["default"].makeThread(thread)];
                 case 1:

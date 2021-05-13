@@ -40,33 +40,6 @@ var uuid_1 = require("uuid");
 var posts_1 = require("../models/posts");
 var communities_1 = require("../models/communities");
 var broadcast_1 = require("./broadcast");
-/** Controller for making post */
-function makeThread(req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        var thread, response;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    thread = req.body;
-                    thread.posts = [];
-                    thread.votes = {};
-                    return [4 /*yield*/, posts_1["default"].makeThread(thread)];
-                case 1:
-                    response = _a.sent();
-                    if (response) {
-                        res.send({
-                            status: 'Success!'
-                        });
-                        return [2 /*return*/];
-                    }
-                    res.send({
-                        error: 'Failed to make post.'
-                    });
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
 /** Generic response handler */
 function responseHandler(response, success, failure, res) {
     if (response) {
@@ -350,7 +323,7 @@ function temp(req, res) {
     });
 }
 exports["default"] = {
-    makeThread: makeThread,
+    // makeThread,
     deleteThread: deleteThread,
     getThread: getThread,
     upvotePost: upvotePost,
