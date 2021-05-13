@@ -15,6 +15,7 @@ export interface Thread {
   // stores username: vote_value
   votes: {};
   communityName?: string;
+  date: string;
 }
 
 export interface Post {
@@ -200,6 +201,7 @@ async function getThread(id: string) {
         content: 1,
         title: 1,
         'posts.parentID': 1,
+        date: 1,
       },
     }
   );

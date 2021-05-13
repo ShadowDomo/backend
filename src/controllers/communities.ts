@@ -53,6 +53,7 @@ async function makeThread(req: express.Request, res: express.Response) {
   const thread: Thread = req.body;
   thread.posts = [];
   thread.votes = {};
+  thread.date = new Date().getTime().toString();
   const communityName: string = req.body.communityName;
 
   // make thread in threads collection
