@@ -5,24 +5,6 @@ import communitiesModel from '../models/communities';
 import {Post, Thread} from '../models/posts';
 import {broadcast} from './broadcast';
 
-/** Controller for making post */
-async function makeThread(req: express.Request, res: express.Response) {
-  const thread: Thread = req.body;
-  thread.posts = [];
-  thread.votes = {};
-  const response = await postModel.makeThread(thread);
-  if (response) {
-    res.send({
-      status: 'Success!',
-    });
-    return;
-  }
-
-  res.send({
-    error: 'Failed to make post.',
-  });
-}
-
 /** Generic response handler */
 function responseHandler(response, success, failure, res: express.Response) {
   if (response) {
@@ -235,7 +217,7 @@ async function temp(req, res) {
 }
 
 export default {
-  makeThread,
+  // makeThread,
   deleteThread,
   getThread,
   upvotePost,
