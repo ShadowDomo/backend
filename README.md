@@ -1,6 +1,6 @@
 # Forum Clone - Backend
 
-The Backend api for the [forum / social media website](https://github.com/ShadowDomo/frontend). Built with ExpressJS, NodeJS and MongoDB.
+The Backend api for the [forum / social media website](https://github.com/dom-zhu/frontend). Built with ExpressJS, NodeJS and MongoDB.
 
 Hosted on AWS Elastic Beanstalk, with the database hosted on MongoDB Atlas.
 
